@@ -1,9 +1,9 @@
 # CS 3331: Advanced Object-Oriented Programming :small_blue_diamond:
----
+
 ## HOMEWORK: Warming Up
 
 ### Due: February 4, 2019
----
+
 This homework shall be done individually. 
 
 The purpose of this assignment is to refresh your memory on Java
