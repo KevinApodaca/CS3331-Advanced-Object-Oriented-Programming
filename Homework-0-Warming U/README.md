@@ -45,9 +45,8 @@ non-functional requirements.
     System.in and display all outputs to System.out. It shall provide
     a way for the user to quit the application, e.g., using a special
     input value. Below is a sample UI.
----
 
-   '
+  
       Welcome to Price Watcher!
 
     Name:   LED monitor
@@ -58,11 +57,12 @@ non-functional requirements.
     Added:  08/25/2018 ($61.13)
 
     Enter 1 (to check price), 2 (to view page), or -1 to quit? 
-    '
+    
 
 **R5.** Optionally, the application shall provide a way to view the Web
     page of the item. Learn how to launch a default web browser
     programmatically in Java.
+
 ---
 ### TESTING
 
@@ -99,7 +99,8 @@ non-functional requirements.
    sensibly indented so it is easy to read and understand.
 
    Be sure your name is in the comments in your code.
----
+
+--- 
 ### REFERENCES 
 
    [1] Wikipedia, Strategy pattern, https://en.wikipedia.org/wiki/
