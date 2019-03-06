@@ -1,5 +1,3 @@
-//package pricewatcher.console;
-
 import java.util.List;
 import java.util.Scanner;
 import java.awt.Desktop;
@@ -8,9 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-
-//import pricewatcher.model.Item;
-//import pricewatcher.model.PriceFinder;
 
 public class UI {
 
@@ -22,7 +17,7 @@ public class UI {
 		double testItemInitialPrice = 61.13;
 		
 		Item testItem = new Item(testItemName, testItemInitialPrice, testItemUrl, testDateAdded);
-		List<Item> testItemList = new ArrayList<Item>();
+		List<Item> testItemList = new ArrayList<>();
 		testItemList.add(testItem);
 		return testItemList;
 	}
@@ -32,8 +27,8 @@ public class UI {
 		for (Item item: itemList) {
 			System.out.println("Name: " + item.getName());
 			System.out.println("URL: " + item.getURL());
-			System.out.println("Price: " + String.format("%.2f", item.getCurrentPrice()));
-			System.out.println("Change: " + String.format("%.2f", item.getPriceChange()) + "%");
+			System.out.println("Price: " + item.getCurrentPrice());
+			System.out.println("Change: " + item.getPriceChange() + "%");
 			System.out.println("Date Added: " + item.getDateAdded() + "($" + String.format("%.2f", item.getOriginalPrice()) + ")");
 		}
 	}
