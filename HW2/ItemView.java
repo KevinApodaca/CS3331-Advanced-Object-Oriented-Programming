@@ -48,6 +48,7 @@ public class ItemView extends JPanel {
     /** Set the view-page click listener. */
     public void setClickListener(ClickListener listener) {
     	this.listener = listener;
+
     }
     
     /** Overridden here to display the details of the item. */
