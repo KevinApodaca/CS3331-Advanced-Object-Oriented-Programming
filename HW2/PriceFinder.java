@@ -1,5 +1,4 @@
-//package pricewatcher.model;
-
+import java.math.BigDecimal;
 
 public class PriceFinder {
 	
@@ -7,8 +6,14 @@ public class PriceFinder {
 	}
 	
 	public double getNewPrice (String url) {
-		/* Gets the current price of an item. For this version, price is randomly generated within a range.*/
-		return 25.0 + Math.random() * (100.0 - 25.0);
+		return roundPrice(25.0 + Math.random() * (100.0 - 25.0));
+
+	}
+
+	public double roundPrice (double price){
+		BigDecimal bd = new BigDecimal(price);
+		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+		return bd.doubleValue();
 	}
 	
 }

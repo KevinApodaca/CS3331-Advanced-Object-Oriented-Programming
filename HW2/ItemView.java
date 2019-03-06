@@ -1,5 +1,3 @@
-//package pricewatcher.base;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -8,17 +6,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
-//import pricewatcher.model.Item;
 
 /** A special panel to display the detail of an item. */
 
 @SuppressWarnings("serial")
 public class ItemView extends JPanel {
-	
+
+    DecimalFormat df = new DecimalFormat("##.##");
 	private List<Item> itemList;
     
 	/** Interface to notify a click on the view page icon. */
@@ -64,11 +62,11 @@ public class ItemView extends JPanel {
 	        y += 20;
 	        g.drawString("URL: " + item.getURL(), x, y);
 	        y += 20;
-	        g.drawString("Price: " + item.getCurrentPrice(), x, y);
+	        g.drawString("Price: " + df.format(item.getCurrentPrice()), x, y);
 	        y += 20;
-	        g.drawString("Change: " + item.getPriceChange(), x, y);
+	        g.drawString("Change: " + df.format(item.getPriceChange()), x, y);
 	        y += 20;
-	        g.drawString("Date Added: " + item.getDateAdded() + "(" + item.getOriginalPrice() + ")", x, y);
+	        g.drawString("Date Added: " + item.getDateAdded() + "(" + df.format(item.getOriginalPrice()) + ")", x, y);
 	        y += 40;
         }
     }

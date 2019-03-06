@@ -1,5 +1,3 @@
-//package pricewatcher.base;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,9 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-//import pricewatcher.model.Item;
-//import pricewatcher.model.PriceFinder;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
@@ -41,14 +36,14 @@ public class Main extends JFrame {
     
     /** Create a new dialog of the given screen dimension. */
     public Main(Dimension dim) {
-        super("Price Watcher!!");
+        super("PRICE WATCHER");
 		String testItemUrl = "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022";
 		String testItemName = "LED monitor";
 		String testDateAdded = "3/4/19";
 		double testItemInitialPrice = 61.13;
 		
 		Item testItem = new Item(testItemName, testItemInitialPrice, testItemUrl, testDateAdded);
-		List<Item> testItemList = new ArrayList<Item>();
+		List<Item> testItemList = new ArrayList<>();
 		testItemList.add(testItem);
 		this.itemList = testItemList;
 		this.priceFinder = new PriceFinder();
@@ -68,8 +63,8 @@ public class Main extends JFrame {
     private void refreshButtonClicked(ActionEvent event) {
     	for (Item item : this.itemList) {
     		item.updatePrice(this.priceFinder.getNewPrice(item.getURL()));
+            showMessage("New Price Updated: " + item.getCurrentPrice());
     	}
-    	showMessage("All prices updated!");
     	super.repaint();
     }
     
@@ -78,6 +73,7 @@ public class Main extends JFrame {
      * the item. */
     private void viewPageClicked() {    	
     	System.out.println("Serendipity");
+
     	showMessage("View clicked!");
     }
         

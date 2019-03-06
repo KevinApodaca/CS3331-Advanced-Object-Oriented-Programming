@@ -1,5 +1,3 @@
-//package pricewatcher.model;
-
 public class Item {
 
 	private String name;
@@ -12,12 +10,12 @@ public class Item {
 		this.currentPrice = price;
 		this.originalPrice = price;
 		this.url = url;
-		this.priceChange = 0.0;
+		this.priceChange =  0.0;
 		this.dateAdded = dateAdded;
 	}
 	
 	public void updatePrice(double newPrice) {
-		this.priceChange = ((newPrice - this.originalPrice) / (this.originalPrice)) * 100;
+		this.priceChange =  ((newPrice - this.originalPrice) / (this.originalPrice)) * 100;
 		this.currentPrice = newPrice;
 	}
 	
