@@ -1,3 +1,56 @@
+/**
+ * CS 3331 Advanced Object Oriented Programming
+ * Spring 2019  
+ * Homework Assignment 2
+ * @author Kevin Apodaca
+ * @author Imani Martin
+ * @version 2.0
+ * @since 3/6/2019
+ *In this homework, you are to develop the second iteration of the Price
+    Watcher application by providing a simple GUI using Java 2D graphics
+    (see the HW0 handout). As in HW0, your application shall keep track of
+    simulated prices of a single, fixed item. Use the baseline/template
+    code available from the course website. The baseline code provides a
+    GUI consisting of the following:
+
+- A button to check the current price of the item (see R3 below)
+- A 2D graphics area to show the details of the item (R1 and R4)
+- A message bar to display various messages
+
+Extend the baseline code to meet the following functional and
+non-functional requirements.
+
+R1. The application shall show the name of an item, its initial and
+    current prices, and the percentage change of the prices (see R3
+    and R4 below). Highlight the price change when the price
+    drops. You may assume that the application knows a single item to
+    watch over the price.
+
+R2. The application shall provide a way to find the current price of
+    the item and calculate a new price change (see R3 below to
+    simulate the price of an item). You may use a button for this.
+
+R3. The application shall include a class, say PriceFinder, to
+    simulate the price of an item. Given the URL of an item, the class
+    returns a "simulated" price of the item, e.g., by generating a
+    random, or normally-distributed, price. The idea is to apply the
+    Strategy design pattern [2] in later assignments by introducing a
+    subclass that actually downloads and parses the web document of
+    the given URL to find the current price.
+
+R4. The application shall use 2-D graphics to display the details of
+    the item. For this, define a custom widget class, say ItemView, as
+    a subclass of JPanel and override its paint() method. A working
+    template can be found in the baseline code available from the
+    course website. Note that the ItemView class will be reused in HW3
+    that supports a list of items; each item of the list is displayed
+    in the ItemView class.
+
+R5. Optionally, the application shall provide a way to view the Web
+    page of the item. Learn how to launch a default web browser
+    programmatically in Java.
+ * 
+*/
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
