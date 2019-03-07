@@ -1,3 +1,5 @@
+package PriceWatcher.model;
+
 import java.math.BigDecimal;
 
 public class PriceFinder {

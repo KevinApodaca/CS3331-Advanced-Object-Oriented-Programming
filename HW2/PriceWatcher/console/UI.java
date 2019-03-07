@@ -1,3 +1,8 @@
+package PriceWatcher.console;
+
+import PriceWatcher.model.Item;
+import PriceWatcher.model.PriceFinder;
+
 import java.util.List;
 import java.util.Scanner;
 import java.awt.Desktop;

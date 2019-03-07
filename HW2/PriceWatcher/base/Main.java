@@ -1,3 +1,8 @@
+package PriceWatcher.base;
+
+import PriceWatcher.model.Item;
+import PriceWatcher.model.PriceFinder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -6,21 +11,16 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 
     /** Default dimension of the dialog. */
-    private final static Dimension DEFAULT_SIZE = new Dimension(500, 400);
+    private final static Dimension DEFAULT_SIZE = new Dimension(1300, 300);
       
     /** Special panel to display the watched item. */
-    private ItemView itemView;
+    private PriceWatcher.base.ItemView itemView;
     
     private List<Item> itemList;
 	private PriceFinder priceFinder;
@@ -45,7 +45,7 @@ public class Main extends JFrame {
 		List<Item> testItemList = new ArrayList<>();
 		testItemList.add(testItem);
 		this.itemList = testItemList;
-		this.priceFinder = new PriceFinder();
+		this.priceFinder = new PriceWatcher.model.PriceFinder();
         setSize(dim);
         
         configureUI();
@@ -62,7 +62,14 @@ public class Main extends JFrame {
     private void refreshButtonClicked(ActionEvent event) {
     	for (Item item : this.itemList) {
     		item.updatePrice(this.priceFinder.getNewPrice(item.getURL()));
-            showMessage("New Price Updated: " + item.getCurrentPrice());
+            showMessage("New Price Updated! $" + item.getCurrentPrice());
+
+            if (item.getPriceChange() > 0){
+                setBackground(Color.RED);
+            }
+            else{
+                setBackground(Color.BLUE);
+            }
     	}
     	super.repaint();
     }
@@ -86,7 +93,7 @@ public class Main extends JFrame {
     	super.repaint();
     }
         
-    /** Configure UI. */
+    /** Configure PriceWatcher.UI. */
     private void configureUI() {
         setLayout(new BorderLayout());
 
@@ -100,17 +107,18 @@ public class Main extends JFrame {
 
         JPanel board = new JPanel();
         board.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(10,5,0,16),
-                BorderFactory.createLineBorder(Color.RED)));
+                BorderFactory.createEmptyBorder(10,5,10,16),
+                BorderFactory.createLineBorder(Color.BLACK)));
         board.setLayout(new GridLayout(1,1));
         itemView = new ItemView(this.itemList);
 
         board.add(itemView);
         add(board, BorderLayout.CENTER);
-        msgBar.setBorder(BorderFactory.createEmptyBorder(10,5,10,16));
+        msgBar.setBorder(BorderFactory.createEmptyBorder(10,16,10,16));
         add(msgBar, BorderLayout.SOUTH);
     }
-      
+
+
     /** Create a control panel consisting of a refresh button. */
     private JPanel makeRefreshControlPanel() {
     	JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));

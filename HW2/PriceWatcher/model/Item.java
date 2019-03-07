@@ -1,3 +1,5 @@
+package PriceWatcher.model;
+
 public class Item {
 
 	private String name;
