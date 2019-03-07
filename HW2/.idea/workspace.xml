@@ -1,37 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e7b33a01-15c7-4f65-a12c-4f4d08fa9169" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HW2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PriceWatcher/base/ItemView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/HW2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/META-INF/HW2.kotlin_module" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/PriceWatcher/base/ItemView$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/PriceWatcher/base/ItemView$ClickListener.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/PriceWatcher/base/ItemView.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/PriceWatcher/base/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/PriceWatcher/console/UI.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/PriceWatcher/model/Item.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/HW2/PriceWatcher/model/PriceFinder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/PriceWatcher/model/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ItemView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/PriceWatcher/base/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PriceFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/PriceWatcher/model/PriceFinder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/PriceWatcher/console/UI.java" afterDir="false" />
-    </list>
+    <list default="true" id="e7b33a01-15c7-4f65-a12c-4f4d08fa9169" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -152,7 +122,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551937695338" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551937922737" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
@@ -214,7 +184,7 @@
       <workItem from="1551831080600" duration="16786000" />
       <workItem from="1551889253010" duration="549000" />
       <workItem from="1551891946898" duration="799000" />
-      <workItem from="1551929916595" duration="6853000" />
+      <workItem from="1551929916595" duration="7183000" />
     </task>
     <task id="LOCAL-00001" summary="- Rounded percent change &amp; updated price to two decimal places&#10;- Adjusted message bar to display newly updated price">
       <created>1551842834738</created>
@@ -237,16 +207,30 @@
       <option name="project" value="LOCAL" />
       <updated>1551850836798</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fixed Scaling of window&#10;Organized code into packages&#10;Color of app changes depends on price drop">
+      <created>1551937668542</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1551937668542</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fixing merge conflicts">
+      <created>1551937766281</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1551937766281</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26221000" />
+    <option name="totallyTimeSpent" value="26551000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="840" y="0" width="840" height="1050" extended-state="0" />
+    <frame x="0" y="0" width="1680" height="1050" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989796" visible="true" weight="0.24686716" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989796" visible="true" weight="0.12026862" />
       <window_info id="Structure" order="1" sideWeight="0.50102043" side_tool="true" weight="0.14713065" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -263,7 +247,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32959184" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.46659708" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.45612246" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.32881" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -315,7 +299,9 @@
     <MESSAGE value="- Rounded percent change &amp; updated price to two decimal places&#10;- Adjusted message bar to display newly updated price" />
     <MESSAGE value="Deleting temp files" />
     <MESSAGE value="- View Page Button&#10;-" />
-    <option name="LAST_COMMIT_MESSAGE" value="- View Page Button&#10;-" />
+    <MESSAGE value="Fixed Scaling of window&#10;Organized code into packages&#10;Color of app changes depends on price drop" />
+    <MESSAGE value="fixing merge conflicts" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing merge conflicts" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Item.class" />
