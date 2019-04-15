@@ -131,14 +131,14 @@ public class Main extends JFrame {
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
 
-        JPanel controlRefresh = makeRefreshControlPanel();
+        JButton controlRefresh = makeRefreshControlPanel();
         // controlRefresh.setBorder(BorderFactory.createEmptyBorder(10, 16, 0, 16));
 
-        JPanel controlViewPage = makeViewPageControlPanel();
+        JButton controlViewPage = makeViewPageControlPanel();
         // controlViewPage.setBorder(BorderFactory.createEmptyBorder(10, 16, 0, 16));
 
         toolbar.add(controlRefresh);
-        // toolbar.addSeparator();
+        toolbar.addSeparator();
         toolbar.add(controlViewPage);
 
         JPanel board = new JPanel();
@@ -156,25 +156,25 @@ public class Main extends JFrame {
     }
 
     /** Create a control panel consisting of a refresh button. */
-    private JPanel makeRefreshControlPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+    private JButton makeRefreshControlPanel() {
+        // JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         JButton refreshButton = new JButton("Refresh");
         refreshButton.setFocusPainted(false);
         refreshButton.addActionListener(this::refreshButtonClicked);
-        panel.add(refreshButton);
+        // panel.add(refreshButton);
 
-        return panel;
+        return refreshButton;
     }
 
     /* Create control panel for View Page button */
-    private JPanel makeViewPageControlPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+    private JButton makeViewPageControlPanel() {
+        // JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         JButton viewPageButton = new JButton(("View Page"));
         viewPageButton.setFocusPainted(false);
         viewPageButton.addActionListener(this::viewPageClicked);
-        panel.add(viewPageButton);
+        // panel.add(viewPageButton);
 
-        return panel;
+        return viewPageButton;
     }
 
     /** Show briefly the given string in the message bar. */
