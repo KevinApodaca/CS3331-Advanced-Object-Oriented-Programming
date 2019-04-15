@@ -98,22 +98,48 @@ public class Main extends JFrame {
     /** Configure PriceWatcher.UI. */
     private void configureUI() {
         setLayout(new BorderLayout());
+
+        /* JMenu */
+        JMenu mainMenu = new JMenu("Main");
+        JMenu appMenu = new JMenu("App");
+        JMenu sortMenu = new JMenu("Sort");
+
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenuItem about, exit, checkPrices, priceChange;
+
+        /* Main Menu */
+        about = new JMenuItem("About");
+        exit = new JMenuItem("Exit");
+
+        /* Item Menu */
+        checkPrices = new JMenuItem("Check Prices");
+
+        /* Sort Menu */
+        priceChange = new JMenuItem("Price Change");
+
+        mainMenu.add(about);
+        mainMenu.add(exit);
+        appMenu.add(checkPrices);
+        sortMenu.add(priceChange);
+
+        menuBar.add(mainMenu);
+        menuBar.add(appMenu);
+        menuBar.add(sortMenu);
+
+        /* Toolbar */
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
 
         JPanel controlRefresh = makeRefreshControlPanel();
         // controlRefresh.setBorder(BorderFactory.createEmptyBorder(10, 16, 0, 16));
-        // add(controlRefresh, BorderLayout.WEST);
 
         JPanel controlViewPage = makeViewPageControlPanel();
         // controlViewPage.setBorder(BorderFactory.createEmptyBorder(10, 16, 0, 16));
-        // add(controlViewPage, BorderLayout.EAST);
 
         toolbar.add(controlRefresh);
         // toolbar.addSeparator();
         toolbar.add(controlViewPage);
-
-        toolbar.add(new JComboBox(new String[] { "new", "check", "solve" }));
 
         JPanel board = new JPanel();
         board.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 5, 10, 16),
@@ -122,6 +148,7 @@ public class Main extends JFrame {
         itemView = new ItemView(this.itemList);
 
         board.add(itemView);
+        setJMenuBar(menuBar);
         add(toolbar, BorderLayout.NORTH);
         add(board, BorderLayout.CENTER);
         msgBar.setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
