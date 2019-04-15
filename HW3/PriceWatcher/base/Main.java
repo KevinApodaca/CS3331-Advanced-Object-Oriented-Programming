@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.text.Document;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
@@ -36,16 +37,20 @@ public class Main extends JFrame {
     /** Create a new dialog of the given screen dimension. */
     public Main(Dimension dim) {
         super("PRICE WATCHER");
-        String testItemUrl = "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022";
-        String testItemName = "LED monitor";
-        String testDateAdded = "3/4/19";
-        double testItemInitialPrice = 61.13;
-
-        Item testItem = new Item(testItemName, testItemInitialPrice, testItemUrl, testDateAdded);
         List<Item> testItemList = new ArrayList<>();
+
+
+        Item testItem = new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19");
+
+        Item testItem2 = new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19");
+
         testItemList.add(testItem);
+        testItemList.add(testItem2);
+
         this.itemList = testItemList;
         this.priceFinder = new PriceWatcher.model.PriceFinder();
+
+
         setSize(dim);
 
         configureUI();
@@ -116,16 +121,17 @@ public class Main extends JFrame {
         toolbar.addSeparator();
         toolbar.add(controlViewPage);
 
-        JPanel board = new JPanel();
-        board.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 5, 10, 16),
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 5, 10, 16),
                 BorderFactory.createLineBorder(Color.BLACK)));
-        board.setLayout(new GridLayout(1, 1));
+        panel.setLayout(new GridLayout(1, 2));
         itemView = new ItemView(this.itemList);
 
-        board.add(itemView);
+        panel.add(itemView);
+
         setJMenuBar(menuBar);
         add(toolbar, BorderLayout.NORTH);
-        add(board, BorderLayout.CENTER);
+         add(panel, BorderLayout.CENTER);
         msgBar.setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
         add(msgBar, BorderLayout.SOUTH);
     }
