@@ -100,42 +100,17 @@ public class Main extends JFrame {
         setLayout(new BorderLayout());
 
         /* JMenu */
-        JMenu mainMenu = new JMenu("Main");
-        JMenu appMenu = new JMenu("App");
-        JMenu sortMenu = new JMenu("Sort");
-
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenuItem about, exit, checkPrices, priceChange;
-
-        /* Main Menu */
-        about = new JMenuItem("About");
-        exit = new JMenuItem("Exit");
-
-        /* Item Menu */
-        checkPrices = new JMenuItem("Check Prices");
-
-        /* Sort Menu */
-        priceChange = new JMenuItem("Price Change");
-
-        mainMenu.add(about);
-        mainMenu.add(exit);
-        appMenu.add(checkPrices);
-        sortMenu.add(priceChange);
-
-        menuBar.add(mainMenu);
-        menuBar.add(appMenu);
-        menuBar.add(sortMenu);
+        JMenuBar menuBar = buildMenuBar();
 
         /* Toolbar */
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
 
         JButton controlRefresh = makeRefreshControlPanel();
-        // controlRefresh.setBorder(BorderFactory.createEmptyBorder(10, 16, 0, 16));
+        controlRefresh.setToolTipText("Refresh Page");
 
         JButton controlViewPage = makeViewPageControlPanel();
-        // controlViewPage.setBorder(BorderFactory.createEmptyBorder(10, 16, 0, 16));
+        controlViewPage.setToolTipText("View Webpage");
 
         toolbar.add(controlRefresh);
         toolbar.addSeparator();
@@ -155,24 +130,54 @@ public class Main extends JFrame {
         add(msgBar, BorderLayout.SOUTH);
     }
 
+    private JMenuBar buildMenuBar(){
+        JMenu mainMenu = new JMenu("Main");
+        JMenu appMenu = new JMenu("App");
+        JMenu sortMenu = new JMenu("Sort");
+
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenuItem about, exit, checkPrices, priceChange;
+
+        /* Main Menu */
+        about = new JMenuItem("About");
+        about.setToolTipText("About PriceWatcher");
+        exit = new JMenuItem("Exit");
+
+        /* Item Menu */
+        checkPrices = new JMenuItem("Check Prices");
+        checkPrices.setToolTipText("Click to get updated prices!");
+
+        /* Sort Menu */
+        priceChange = new JMenuItem("Price Change");
+        priceChange.setToolTipText("Sort by price change (%)");
+
+        mainMenu.add(about);
+        mainMenu.add(exit);
+        appMenu.add(checkPrices);
+        sortMenu.add(priceChange);
+
+        menuBar.add(mainMenu);
+        menuBar.add(appMenu);
+        menuBar.add(sortMenu);
+
+        return menuBar;
+    }
+
     /** Create a control panel consisting of a refresh button. */
     private JButton makeRefreshControlPanel() {
-        // JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = new JButton("Check Prices");
         refreshButton.setFocusPainted(false);
         refreshButton.addActionListener(this::refreshButtonClicked);
-        // panel.add(refreshButton);
 
         return refreshButton;
     }
 
     /* Create control panel for View Page button */
     private JButton makeViewPageControlPanel() {
-        // JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEADING));
         JButton viewPageButton = new JButton(("View Page"));
         viewPageButton.setFocusPainted(false);
         viewPageButton.addActionListener(this::viewPageClicked);
-        // panel.add(viewPageButton);
 
         return viewPageButton;
     }
@@ -190,6 +195,8 @@ public class Main extends JFrame {
             }
         }).start();
     }
+
+
 
     public static void main(String[] args) {
         new Main();
