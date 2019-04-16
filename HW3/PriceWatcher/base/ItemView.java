@@ -75,18 +75,20 @@ public class ItemView extends JPanel {
         super.paint(g);
 
 
-
         int x = 20, y = 20;
         for (Item item : this.itemList) {
             // g.drawImage(getImage(), x, y, 10, 10, null);
             // y += 20;
 
-            if (item.getPriceChange() > 0){
-                setBackground(Color.PINK);
-            }
-            else if (item.getPriceChange() < 0){
-                setBackground(Color.CYAN);
-            }
+//            if (item.getPriceChange() >= 0){
+//                setForeground(Color.RED);
+//            }
+//            else if (item.getPriceChange() < 0){
+//                setForeground(Color.BLUE);
+//            }
+//            else{
+//                setForeground(Color.BLACK);
+//            }
 
             g.drawString("Name: " + item.getName(), x, y);
             y += 20;
@@ -95,6 +97,7 @@ public class ItemView extends JPanel {
             g.drawString("Price: $" + df.format(item.getCurrentPrice()), x, y);
             y += 20;
             g.drawString("Change: " + df.format(item.getPriceChange()) + "%", x, y);
+
             y += 20;
             g.drawString("Date Added: " + item.getDateAdded() + " ($" + df.format(item.getOriginalPrice()) + ")", x, y);
             y += 40;

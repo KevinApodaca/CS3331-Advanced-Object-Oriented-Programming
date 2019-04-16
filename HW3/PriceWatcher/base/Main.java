@@ -5,14 +5,15 @@ import PriceWatcher.model.PriceFinder;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.text.Document;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
@@ -70,12 +71,6 @@ public class Main extends JFrame {
         for (Item item : this.itemList) {
             item.updatePrice(this.priceFinder.getNewPrice(item.getURL()));
             showMessage("New Price Updated! $" + item.getCurrentPrice());
-
-            if (item.getPriceChange() > 0) {
-                setBackground(Color.RED);
-            } else {
-                setBackground(Color.BLUE);
-            }
         }
         super.repaint();
     }
@@ -101,7 +96,7 @@ public class Main extends JFrame {
     }
 
     /** Configure PriceWatcher.UI. */
-    private void configureUI() {
+    private void configureUI(){
         setLayout(new BorderLayout());
 
         /* JMenu */
@@ -111,37 +106,44 @@ public class Main extends JFrame {
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
 
-        JButton controlRefresh = makeRefreshControlPanel();
-        controlRefresh.setToolTipText("Refresh Page");
+        JButton checkPriceBtn = createPriceUpdateButton();
 
-        JButton controlViewPage = makeViewPageControlPanel();
-        controlViewPage.setToolTipText("View Webpage");
+        JButton openWebPageBtn = createViewPageButton();
 
-        toolbar.add(controlRefresh);
+        toolbar.add(checkPriceBtn);
         toolbar.addSeparator();
-        toolbar.add(controlViewPage);
+        toolbar.add(openWebPageBtn);
 
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 5, 10, 16),
                 BorderFactory.createLineBorder(Color.BLACK)));
-        panel.setLayout(new GridLayout(1, 2));
+        panel.setLayout(new GridLayout(1, 1));
         itemView = new ItemView(this.itemList);
 
         panel.add(itemView);
 
         setJMenuBar(menuBar);
         add(toolbar, BorderLayout.NORTH);
-         add(panel, BorderLayout.CENTER);
+
+        add(panel, BorderLayout.CENTER);
         msgBar.setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
         add(msgBar, BorderLayout.SOUTH);
     }
 
     private JMenuBar buildMenuBar(){
-        JMenu mainMenu = new JMenu("Main");
-        JMenu appMenu = new JMenu("App");
-        JMenu sortMenu = new JMenu("Sort");
-
         JMenuBar menuBar = new JMenuBar();
+
+        JMenu mainMenu = new JMenu("Main");
+        mainMenu.setMnemonic(KeyEvent.VK_M);
+        mainMenu.getAccessibleContext().setAccessibleDescription("Main Menu");
+        menuBar.add(mainMenu);
+
+
+        JMenu appMenu = new JMenu("App");
+        menuBar.add(appMenu);
+
+        JMenu sortMenu = new JMenu("Sort");
+        menuBar.add(sortMenu);
 
         JMenuItem about, exit, checkPrices, priceChange;
 
@@ -151,8 +153,9 @@ public class Main extends JFrame {
         exit = new JMenuItem("Exit");
 
         /* Item Menu */
-        checkPrices = new JMenuItem("Check Prices");
-        checkPrices.setToolTipText("Click to get updated prices!");
+        checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
+        // checkPrices.setIcon();
+        checkPrices.setToolTipText("Check for updated prices");
 
         /* Sort Menu */
         priceChange = new JMenuItem("Price Change");
@@ -163,29 +166,54 @@ public class Main extends JFrame {
         appMenu.add(checkPrices);
         sortMenu.add(priceChange);
 
-        menuBar.add(mainMenu);
-        menuBar.add(appMenu);
-        menuBar.add(sortMenu);
-
         return menuBar;
     }
 
     /** Create a control panel consisting of a refresh button. */
-    private JButton makeRefreshControlPanel() {
-        JButton refreshButton = new JButton("Check Prices");
-        refreshButton.setFocusPainted(false);
-        refreshButton.addActionListener(this::refreshButtonClicked);
+    private JButton createPriceUpdateButton() {
+        ImageIcon icon = createImageIcon("checkIcon.png");
+        icon = rescaleImage(icon);
 
-        return refreshButton;
+        JButton button = new JButton(icon);
+        button.setFocusPainted(false);
+        button.addActionListener(this::refreshButtonClicked);
+        button.setToolTipText("Check for updated prices");
+
+        return button;
     }
 
     /* Create control panel for View Page button */
-    private JButton makeViewPageControlPanel() {
-        JButton viewPageButton = new JButton(("View Page"));
-        viewPageButton.setFocusPainted(false);
-        viewPageButton.addActionListener(this::viewPageClicked);
+    private JButton createViewPageButton() {
+        JButton button = new JButton(("View Page"));
+        button.setFocusPainted(false);
+        button.addActionListener(this::viewPageClicked);
+        button.setToolTipText("Visit webpage");
 
-        return viewPageButton;
+        return button;
+    }
+
+    private ImageIcon rescaleImage(ImageIcon icon){
+
+        Image rescaledImage = null;
+        if (icon != null) {
+            rescaledImage = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        }
+        if (rescaledImage != null) {
+            icon = new ImageIcon(rescaledImage);
+        }
+        return icon;
+    }
+
+    /* Create icon */
+    private ImageIcon createImageIcon(String filename) {
+        URL imageUrl = getClass().getResource("../images/" + filename);
+        if (imageUrl != null) {
+            return new ImageIcon(imageUrl);
+        }
+        else {
+            System.err.println("Cannot locate file: " + imageUrl);
+            return null;
+        }
     }
 
     /** Show briefly the given string in the message bar. */
