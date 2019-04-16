@@ -171,8 +171,7 @@ public class Main extends JFrame {
 
     /** Create a control panel consisting of a refresh button. */
     private JButton createPriceUpdateButton() {
-        ImageIcon icon = createImageIcon("checkIcon.png");
-        icon = rescaleImage(icon);
+        ImageIcon icon = rescaleImage(createImageIcon("checkIcon.png"));
 
         JButton button = new JButton(icon);
         button.setFocusPainted(false);
@@ -184,7 +183,9 @@ public class Main extends JFrame {
 
     /* Create control panel for View Page button */
     private JButton createViewPageButton() {
-        JButton button = new JButton(("View Page"));
+        ImageIcon icon = rescaleImage(createImageIcon("openLink.png"));
+
+        JButton button = new JButton(icon);
         button.setFocusPainted(false);
         button.addActionListener(this::viewPageClicked);
         button.setToolTipText("Visit webpage");
