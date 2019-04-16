@@ -154,7 +154,7 @@ public class Main extends JFrame {
 
         /* Item Menu */
         checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
-        // checkPrices.setIcon();
+        checkPrices.setIcon(rescaleImage(createImageIcon("checkIcon.png")));
         checkPrices.setToolTipText("Check for updated prices");
 
         /* Sort Menu */
