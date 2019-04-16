@@ -103,16 +103,7 @@ public class Main extends JFrame {
         JMenuBar menuBar = buildMenuBar();
 
         /* Toolbar */
-        JToolBar toolbar = new JToolBar();
-        toolbar.setRollover(true);
-
-        JButton checkPriceBtn = createPriceUpdateButton();
-
-        JButton openWebPageBtn = createViewPageButton();
-
-        toolbar.add(checkPriceBtn);
-        toolbar.addSeparator();
-        toolbar.add(openWebPageBtn);
+        JToolBar toolbar = createToolBar();
 
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 5, 10, 16),
@@ -123,8 +114,8 @@ public class Main extends JFrame {
         panel.add(itemView);
 
         setJMenuBar(menuBar);
-        add(toolbar, BorderLayout.NORTH);
 
+        add(toolbar, BorderLayout.NORTH);
         add(panel, BorderLayout.CENTER);
         msgBar.setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
         add(msgBar, BorderLayout.SOUTH);
@@ -133,45 +124,110 @@ public class Main extends JFrame {
     private JMenuBar buildMenuBar(){
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu mainMenu = new JMenu("Main");
-        mainMenu.setMnemonic(KeyEvent.VK_M);
-        mainMenu.getAccessibleContext().setAccessibleDescription("Main Menu");
+        JMenu mainMenu = createMainMenu();
         menuBar.add(mainMenu);
 
+        JMenu editMenu = createEditMenu();
+        menuBar.add(editMenu);
 
-        JMenu appMenu = new JMenu("App");
-        menuBar.add(appMenu);
-
-        JMenu sortMenu = new JMenu("Sort");
+        JMenu sortMenu = createSortMenu();
         menuBar.add(sortMenu);
-
-        JMenuItem about, exit, checkPrices, priceChange;
-
-        /* Main Menu */
-        about = new JMenuItem("About");
-        about.setToolTipText("About PriceWatcher");
-        exit = new JMenuItem("Exit");
-
-        /* Item Menu */
-        checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
-        checkPrices.setIcon(rescaleImage(createImageIcon("checkIcon.png")));
-        checkPrices.setToolTipText("Check for updated prices");
-
-        /* Sort Menu */
-        priceChange = new JMenuItem("Price Change");
-        priceChange.setToolTipText("Sort by price change (%)");
-
-        mainMenu.add(about);
-        mainMenu.add(exit);
-        appMenu.add(checkPrices);
-        sortMenu.add(priceChange);
 
         return menuBar;
     }
 
+    private JToolBar createToolBar(){
+        JToolBar toolbar = new JToolBar();
+        toolbar.setRollover(true);
+
+        JButton checkPriceBtn = createPriceUpdateButton();
+        JButton openWebPageBtn = createViewPageButton();
+
+        JButton addBtn = new JButton(rescaleImage(createImageIcon("add.png")));
+        addBtn.setToolTipText("Add an additional item");
+
+        JButton removeBtn = new JButton(rescaleImage(createImageIcon("remove.png")));
+        removeBtn.setToolTipText("Remove from list");
+
+        JButton editBtn = new JButton(rescaleImage(createImageIcon("edit.png")));
+        editBtn.setToolTipText("Edit item");
+
+        toolbar.add(checkPriceBtn);
+        toolbar.add(addBtn);
+        toolbar.add(removeBtn);
+        toolbar.add(editBtn);
+        toolbar.addSeparator();
+        toolbar.add(openWebPageBtn);
+
+        return toolbar;
+    }
+
+    private JMenu createMainMenu(){
+        JMenu mainMenu = new JMenu("PriceWatcher");
+        JMenuItem about, exit;
+
+        mainMenu.setMnemonic(KeyEvent.VK_M);
+        mainMenu.getAccessibleContext().setAccessibleDescription("Main Menu");
+
+        about = new JMenuItem("About", rescaleImage(createImageIcon("about.png")));
+        about.setToolTipText("About PriceWatcher");
+
+        exit = new JMenuItem("Quit");
+
+        mainMenu.add(about);
+        mainMenu.add(exit);
+
+        return mainMenu;
+
+    }
+
+    private JMenu createEditMenu(){
+        JMenuItem checkPrices, addItem, removeItem, editItem;
+        JMenu editMenu = new JMenu("Edit");
+
+        checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
+        checkPrices.setIcon(rescaleImage(createImageIcon("check.png")));
+        checkPrices.setToolTipText("Check for updated prices");
+
+        addItem = new JMenuItem("Add Item", KeyEvent.VK_A);
+        addItem.setIcon(rescaleImage(createImageIcon("add.png")));
+        addItem.setToolTipText("Add an additional item");
+
+        removeItem = new JMenuItem("Remove Item", KeyEvent.VK_D);
+        removeItem.setIcon(rescaleImage(createImageIcon("remove.png")));
+        removeItem.setToolTipText("Remove from list");
+
+        editItem = new JMenuItem("Edit Item");
+        editItem.setIcon(rescaleImage(createImageIcon("edit.png")));
+        editItem.setToolTipText("Edit item");
+
+        editMenu.add(checkPrices);
+        editMenu.add(addItem);
+        editMenu.add(removeItem);
+        editMenu.add(editItem);
+
+
+        return editMenu;
+    }
+
+    private JMenu createSortMenu(){
+        JMenuItem priceChange;
+        JMenu sortMenu = new JMenu("Sort");
+
+        priceChange = new JMenuItem("Price Change (%)");
+        priceChange.setToolTipText("Sort by price change");
+
+
+
+        sortMenu.add(priceChange);
+
+        return sortMenu;
+
+    }
+
     /** Create a control panel consisting of a refresh button. */
     private JButton createPriceUpdateButton() {
-        ImageIcon icon = rescaleImage(createImageIcon("checkIcon.png"));
+        ImageIcon icon = rescaleImage(createImageIcon("check.png"));
 
         JButton button = new JButton(icon);
         button.setFocusPainted(false);
