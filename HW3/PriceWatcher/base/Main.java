@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.DecimalFormat;
 
 import javax.swing.*;
 
@@ -321,17 +322,16 @@ public class Main extends JFrame {
 }
 
 class ItemListRenderer extends JLabel implements ListCellRenderer<Item>{
+    DecimalFormat df = new DecimalFormat("###.##");
     public ItemListRenderer(){
         setOpaque(true);
     }
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Item> list, Item item, int index, boolean isSelected, boolean cellHasFocus){
-        setText("Name: " + item.getName());
-        setText("URL: " + item.getURL());
-        setText("Price: " + item.getCurrentPrice());
-        setText("Change: " + item.getPriceChange());
-        setText("Added: " + item.getDateAdded());
+
+        String listItems = "<html>Name: " + item.getName() + "<br/>URL: " + item.getURL() + "<br/>Price: $" + item.getCurrentPrice() + "<br/>Change: " + df.format(item.getPriceChange()) + "% <br/>Date Added: " + item.getDateAdded() + " (Initial Price: $" + item.getOriginalPrice() + ")";
+        setText(listItems);
 
 
         if(isSelected){
