@@ -218,6 +218,7 @@ public class Main extends JFrame {
     *  Remove an item
     *  Edit the information of an item.
  * @return completed toolbar
+ * @see images folder for all icons used in this method.
  */
     private JToolBar createToolBar(){
         JToolBar toolbar = new JToolBar();
@@ -248,6 +249,7 @@ public class Main extends JFrame {
 /**
  * Here we create the main menu that will be displayed.
  * @return the main menu
+ * @see images folder for the about icon.
  */
     private JMenu createMainMenu(){
         JMenu mainMenu = new JMenu("PriceWatcher");
@@ -274,6 +276,7 @@ public class Main extends JFrame {
     * Remove an item from the list that will no longer be tracked.
     * Edit the information of an item that is currently being tracked.
  * @return a menu that allows user to edit
+ * @see images folder for all the icons that we use
  */
     private JMenu createEditMenu(){
         JMenuItem checkPrices, addItem, removeItem, editItem;
