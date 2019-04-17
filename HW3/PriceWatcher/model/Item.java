@@ -68,51 +68,87 @@ public class Item {
 		this.priceChange =  ((newPrice - this.originalPrice) / (this.originalPrice)) * 100;
 		this.currentPrice = newPrice;
 	}
-	
+/**
+ * Method will show original price.
+ * @return a new instance of original price.
+ */	
 	public double getOriginalPrice() {
 		return this.originalPrice;
 	}
-	
+/**
+ * Method will show current price of an item.
+ * @return the current price of some item.
+ */	
 	public double getCurrentPrice() {
 		return this.currentPrice;
 	}
-	
+/**
+ * Method will get the price change of an item.
+ * @return the change in price of an item.
+ */	
 	public double getPriceChange() {
 		return this.priceChange;
 	}
-	
+/**
+ * Method will get the URL of an item.
+ * @return the string URL of the item.
+ */	
 	public String getURL() {
 		return this.url;
 	}
-	
+/**
+ * Method will get the name of the item.
+ * @return the string name of a selected item.
+ */	
 	public String getName() {
 		return this.name;
 	}
-	
+/**
+ * Method will show the date an item was added.
+ * @return date item was added.
+ */	
 	public String getDateAdded() {
 		return this.dateAdded;
 	}
-	
+/**
+ * Method will take in an original price for an item and set it as the price for the item.
+ * @param originalPrice
+ */	
 	public void setOriginalPrice(double originalPrice) {
 		this.originalPrice = originalPrice;
 	}
-	
+/**
+ * Method will take in a price of the item and set it as the current price of that item.
+ * @param currentPrice
+ */	
 	public void setCurrentPrice(double currentPrice) {
 		this.currentPrice = currentPrice;
 	}
-	
+/**
+ * Method will take in a price for an item and set it as the change of price for it.
+ * @param priceChange
+ */	
 	public void setPriceChange(double priceChange) {
 		this.priceChange = priceChange;
 	}
-	
+/**
+ * Method takes in a string URL and sets it as the URL of the item.
+ * @param url
+ */	
 	public void setURL(String url) {
 		this.url = url;
 	}
-	
+/**
+ * Method will take in a string name of the item and set it as the name of the item.
+ * @param name
+ */	
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+/**
+ * Method will take in a string of the date the item was added and set it as the item's date that it was added to the app.
+ * @param dateAdded
+ */	
 	public void setDateAdded(String dateAdded) {
 		this.dateAdded = dateAdded;
 	}
