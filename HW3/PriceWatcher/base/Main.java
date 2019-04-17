@@ -12,6 +12,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
@@ -20,7 +21,9 @@ public class Main extends JFrame {
     private Item[] items = {
             new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"),
 
-            new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19")
+            new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"),
+
+            new Item("Persona 5 PS4", 301.99, "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019")
     };
 
     private JList itemList = new JList(items);
@@ -28,7 +31,7 @@ public class Main extends JFrame {
 
 
     /** Default dimension of the dialog. */
-    private final static Dimension DEFAULT_SIZE = new Dimension(400, 300);
+    private final static Dimension DEFAULT_SIZE = new Dimension(500, 300);
 
     /** Special panel to display the watched item. */
     private PriceWatcher.base.ItemView itemView;
@@ -83,7 +86,7 @@ public class Main extends JFrame {
     private void refreshButtonClicked(ActionEvent event) {
         for (Item item : this.items) {
             item.updatePrice(this.priceFinder.getNewPrice(item.getURL()));
-            showMessage("New Price Updated! $" + item.getCurrentPrice());
+            showMessage("New Price Updated!");
         }
         super.repaint();
     }
@@ -123,9 +126,7 @@ public class Main extends JFrame {
         panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 5, 10, 16),
                 BorderFactory.createLineBorder(Color.BLACK)));
         panel.setLayout(new GridLayout(1, 1));
-        // itemView = new ItemView(this.itemList);
 
-        // panel.add(itemView);
 
         setJMenuBar(menuBar);
 
@@ -133,16 +134,17 @@ public class Main extends JFrame {
         itemList = new JList(items);
 
         itemList.setCellRenderer(new ItemListRenderer());
-        itemList.setVisibleRowCount(4);
-        JScrollPane pane = new JScrollPane(itemList);
+        itemList.setFixedCellHeight(100);
+        // itemList.setVisibleRowCount(-1);
+        JScrollPane pane = new JScrollPane(itemList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 
         /* Message Bar */
         msgBar.setBorder(BorderFactory.createEmptyBorder(10, 16, 10, 16));
 
-        add(pane, BorderLayout.CENTER);
         add(toolbar, BorderLayout.NORTH);
-        // add(panel, BorderLayout.CENTER);
+        add(pane, BorderLayout.CENTER);
         add(msgBar, BorderLayout.SOUTH);
     }
 
@@ -166,7 +168,7 @@ public class Main extends JFrame {
         toolbar.setRollover(true);
 
         JButton checkPriceBtn = createPriceUpdateButton();
-       // JButton openWebPageBtn = createViewPageButton();
+        JButton openWebPageBtn = createViewPageButton();
 
         JButton addBtn = new JButton(rescaleImage(createImageIcon("add")));
         addBtn.setToolTipText("Add an additional item");
@@ -182,7 +184,7 @@ public class Main extends JFrame {
         toolbar.add(removeBtn);
         toolbar.add(editBtn);
         toolbar.addSeparator();
-        // toolbar.add(openWebPageBtn);
+        toolbar.add(openWebPageBtn);
 
         return toolbar;
     }
@@ -321,6 +323,7 @@ public class Main extends JFrame {
 
 }
 
+/* Render each item from the list */
 class ItemListRenderer extends JLabel implements ListCellRenderer<Item>{
     DecimalFormat df = new DecimalFormat("###.##");
     public ItemListRenderer(){
