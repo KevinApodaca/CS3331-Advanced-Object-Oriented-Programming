@@ -1,3 +1,8 @@
+/**
+ * CS 3331 Advanced Object Oriented Programming
+ * @author Kevin Apodaca, Imani Martin
+ * @since 4/17/19
+ */
 package PriceWatcher.model;
 
 public class Item {
