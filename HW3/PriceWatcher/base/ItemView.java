@@ -80,16 +80,6 @@ public class ItemView extends JPanel {
             // g.drawImage(getImage(), x, y, 10, 10, null);
             // y += 20;
 
-//            if (item.getPriceChange() >= 0){
-//                setForeground(Color.RED);
-//            }
-//            else if (item.getPriceChange() < 0){
-//                setForeground(Color.BLUE);
-//            }
-//            else{
-//                setForeground(Color.BLACK);
-//            }
-
             g.drawString("Name: " + item.getName(), x, y);
             y += 20;
             g.drawString("URL: " + item.getURL(), x, y);
