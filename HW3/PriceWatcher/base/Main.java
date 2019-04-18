@@ -5,14 +5,19 @@ import PriceWatcher.model.PriceFinder;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Date;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
@@ -26,12 +31,13 @@ public class Main extends JFrame {
             new Item("Persona 5 PS4", 301.99, "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019")
     };
 
-    private JList itemList = new JList(items);
+    private JList itemList;
     private DefaultListModel model;
+    JScrollPane pane;
 
 
     /** Default dimension of the dialog. */
-    private final static Dimension DEFAULT_SIZE = new Dimension(500, 300);
+    private final static Dimension DEFAULT_SIZE = new Dimension(500, 405);
 
     /** Special panel to display the watched item. */
     private PriceWatcher.base.ItemView itemView;
@@ -43,19 +49,19 @@ public class Main extends JFrame {
     private JLabel msgBar = new JLabel(" ");
 
     /** Create a new dialog. */
-    public Main() {
+    private Main() {
         this(DEFAULT_SIZE);
     }
 
     /** Create a new dialog of the given screen dimension. */
-    public Main(Dimension dim) {
+    private Main(Dimension dim) {
         super("PRICE WATCHER");
 
         this.priceFinder = new PriceWatcher.model.PriceFinder();
 
         setSize(dim);
         configureUI();
-        // setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
         setResizable(true);
@@ -115,6 +121,7 @@ public class Main extends JFrame {
     private void configureUI(){
         setLayout(new BorderLayout());
         addComponentListener(new MyComponentListener(400, 300));
+        addWindowListener(new ExitListener());
 
         /* JMenu */
         JMenuBar menuBar = buildMenuBar();
@@ -131,13 +138,17 @@ public class Main extends JFrame {
         setJMenuBar(menuBar);
 
         /* LIST */
-        itemList = new JList(items);
+        model = new DefaultListModel();
+        for(int i = 0; i < items.length; i++)
+            model.addElement(items[i]);
 
+        itemList = new JList(model);
         itemList.setCellRenderer(new ItemListRenderer());
         itemList.setFixedCellHeight(100);
-        // itemList.setVisibleRowCount(-1);
-        JScrollPane pane = new JScrollPane(itemList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+        pane = new JScrollPane(itemList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        pane.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
 
 
         /* Message Bar */
@@ -170,8 +181,9 @@ public class Main extends JFrame {
         JButton checkPriceBtn = createPriceUpdateButton();
         JButton openWebPageBtn = createViewPageButton();
 
-        JButton addBtn = new JButton(rescaleImage(createImageIcon("add")));
+        JButton addBtn = new JButton(rescaleImage(createImageIcon("add.png")));
         addBtn.setToolTipText("Add an additional item");
+        addBtn.addActionListener(new AddItemPopUp());
 
         JButton removeBtn = new JButton(rescaleImage(createImageIcon("remove.png")));
         removeBtn.setToolTipText("Remove from list");
@@ -214,11 +226,14 @@ public class Main extends JFrame {
 
         checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
         checkPrices.setIcon(rescaleImage(createImageIcon("check.png")));
+        checkPrices.addActionListener(this::refreshButtonClicked);
         checkPrices.setToolTipText("Check for updated prices");
 
         addItem = new JMenuItem("Add Item", KeyEvent.VK_A);
         addItem.setIcon(rescaleImage(createImageIcon("add.png")));
         addItem.setToolTipText("Add an additional item");
+        addItem.addActionListener(new AddItemPopUp());
+
 
         removeItem = new JMenuItem("Remove Item", KeyEvent.VK_D);
         removeItem.setIcon(rescaleImage(createImageIcon("remove.png")));
@@ -243,8 +258,6 @@ public class Main extends JFrame {
 
         priceChange = new JMenuItem("Price Change (%)");
         priceChange.setToolTipText("Sort by price change");
-
-
 
         sortMenu.add(priceChange);
 
@@ -289,7 +302,6 @@ public class Main extends JFrame {
         return icon;
     }
 
-
     /* Create icon */
     private ImageIcon createImageIcon(String filename) {
         URL imageUrl = getClass().getResource("../images/" + filename);
@@ -297,7 +309,6 @@ public class Main extends JFrame {
             return new ImageIcon(imageUrl);
         }
         else {
-            System.err.println("Cannot locate file: " + imageUrl);
             return null;
         }
     }
@@ -309,6 +320,7 @@ public class Main extends JFrame {
             try {
                 Thread.sleep(3 * 1000); // 3 seconds
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             if (msg.equals(msgBar.getText())) {
                 SwingUtilities.invokeLater(() -> msgBar.setText(" "));
@@ -317,34 +329,139 @@ public class Main extends JFrame {
     }
 
 
+    private JFormattedTextField nameField;
+    private JFormattedTextField urlField;
+    private JFormattedTextField priceField;
+    private JFormattedTextField dateField;
+
+    private String name = "";
+    private String url = "";
+    private double price = 0.00;
+    private String date = "";
+
+    private class AddItemPopUp implements ActionListener, PropertyChangeListener {
+        @Override
+        public void actionPerformed(ActionEvent event){
+            JFrame addItemWindow = new JFrame("Add New Item");
+            addItemWindow.addComponentListener(new MyComponentListener(400, 350));
+            addItemWindow.setLocationRelativeTo(null);
+            addItemWindow.setBackground(new Color(50,205,50));
+            addItemWindow.setLayout(new BorderLayout());
+
+            /* Strings for labels */
+            String nameStr = "Name: ";
+            String urlStr = "URL: ";
+            String priceStr = "Price: ";
+            String dateStr = "Date: ";
+
+            /* Labels for identifying fields */
+            JLabel nameLabel = new JLabel(nameStr);
+            JLabel urlLabel = new JLabel(urlStr);
+            JLabel priceLabel = new JLabel(priceStr);
+            JLabel dateLabel = new JLabel(dateStr);
+
+            /* Fields for typing */
+            nameField = new JFormattedTextField();
+            nameField.setValue("");
+            nameField.setColumns(5);
+            nameField.addPropertyChangeListener("value", this);
+
+            urlField = new JFormattedTextField();
+            urlField.setValue("");
+            urlField.setColumns(5);
+            urlField.addPropertyChangeListener("value", this);
+
+            priceField = new JFormattedTextField(NumberFormat.getCurrencyInstance());
+            priceField.setValue(0.00);
+            priceField.setColumns(5);
+            priceField.addPropertyChangeListener("value", this);
+
+            dateField = new JFormattedTextField();
+            dateField.setValue(new Date());
+            Date date = (Date)dateField.getValue();
+            dateField.setEditable(false);
+
+            /* Accessibility tools */
+            nameLabel.setLabelFor(nameField);
+            urlLabel.setLabelFor(urlField);
+            priceLabel.setLabelFor(priceField);
+            dateLabel.setLabelFor(dateField);
+
+            JPanel labelPane = new JPanel(new GridLayout(0,1));
+            JPanel fieldPane = new JPanel(new GridLayout(0,1));
+
+            labelPane.add(nameLabel);
+            labelPane.add(urlLabel);
+            labelPane.add(priceLabel);
+            labelPane.add(dateLabel);
+
+            fieldPane.add(nameField);
+            fieldPane.add(urlField);
+            fieldPane.add(priceField);
+            fieldPane.add(dateField);
+
+            /* If user clicks "Add", new item will be appended to the list */
+            JButton button = new JButton("Add");
+            button.addActionListener(new ItemAdder());
+
+
+            labelPane.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
+            fieldPane.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
+            addItemWindow.add(labelPane, BorderLayout.LINE_START);
+            addItemWindow.add(fieldPane, BorderLayout.CENTER);
+            addItemWindow.add(button, BorderLayout.PAGE_END);
+
+
+//            pane.validate();
+//            pane.repaint();
+
+            addItemWindow.pack();
+            addItemWindow.setVisible(true);
+        }
+
+        @Override
+        public void propertyChange(PropertyChangeEvent e) {
+            Object source = e.getSource();
+            if (source == nameField) {
+                name = ((String)nameField.getValue());
+            } else if (source == urlField) {
+                url = ((String)urlField.getValue());
+            } else if (source == priceField) {
+                price = ((Number)priceField.getValue()).doubleValue();
+            }else if (source == dateField){
+                date = ((String)dateField.getValue());
+            }
+
+            // Item newItem = new Item(name, price, url, date);
+
+
+        }
+    }
+
+
+    private class ItemAdder implements ActionListener{
+        public void actionPerformed(ActionEvent event) {
+            int index = itemList.getSelectedIndex();
+            int size = model.getSize();
+
+            if(index == -1 || (index + 1 == size)){
+                model.addElement(itemList);
+                itemList.setSelectedIndex(size);
+            }else{
+                model.insertElementAt(itemList, index+1);
+                itemList.setSelectedIndex(index + 1);
+            }
+        }
+    }
+
+    public class ExitListener extends WindowAdapter {
+        public void windowClosing(WindowEvent event) {
+            System.exit(0);
+        }
+    }
+
     public static void main(String[] args) {
         new Main();
     }
 
-}
-
-/* Render each item from the list */
-class ItemListRenderer extends JLabel implements ListCellRenderer<Item>{
-    DecimalFormat df = new DecimalFormat("###.##");
-    public ItemListRenderer(){
-        setOpaque(true);
-    }
-
-    @Override
-    public Component getListCellRendererComponent(JList<? extends Item> list, Item item, int index, boolean isSelected, boolean cellHasFocus){
-
-        String listItems = "<html>Name: " + item.getName() + "<br/>URL: " + item.getURL() + "<br/>Price: $" + item.getCurrentPrice() + "<br/>Change: " + df.format(item.getPriceChange()) + "% <br/>Date Added: " + item.getDateAdded() + " (Initial Price: $" + item.getOriginalPrice() + ")";
-        setText(listItems);
-
-
-        if(isSelected){
-            setBackground(list.getSelectionBackground());
-            setForeground(list.getSelectionForeground());
-        }else{
-            setBackground(list.getBackground());
-            setForeground(list.getForeground());
-        }
-        return this;
-
-    }
 }

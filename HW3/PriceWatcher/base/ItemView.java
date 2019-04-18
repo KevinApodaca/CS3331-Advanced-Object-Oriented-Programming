@@ -74,12 +74,8 @@ public class ItemView extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
-
         int x = 20, y = 20;
         for (Item item : this.itemList) {
-            // g.drawImage(getImage(), x, y, 10, 10, null);
-            // y += 20;
-
             g.drawString("Name: " + item.getName(), x, y);
             y += 20;
             g.drawString("URL: " + item.getURL(), x, y);
@@ -87,8 +83,7 @@ public class ItemView extends JPanel {
             g.drawString("Price: $" + df.format(item.getCurrentPrice()), x, y);
             y += 20;
             g.drawString("Change: " + df.format(item.getPriceChange()) + "%", x, y);
-
-            y += 20;
+             y += 20;
             g.drawString("Date Added: " + item.getDateAdded() + " ($" + df.format(item.getOriginalPrice()) + ")", x, y);
             y += 40;
         }
