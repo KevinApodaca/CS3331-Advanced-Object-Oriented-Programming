@@ -6,12 +6,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 
-/* Render each item from the list */
+/**
+ * This will render each of the items of our list onto the panel
+ */
+
 class ItemListRenderer extends JLabel implements ListCellRenderer<Item>{
     DecimalFormat df = new DecimalFormat("###.##");
     public ItemListRenderer(){
         setOpaque(true);
     }
+
+    /**
+     * Calling all our items and getting their information to display on the screen.
+     */
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Item> list, Item item, int index, boolean isSelected, boolean cellHasFocus){

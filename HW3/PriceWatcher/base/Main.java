@@ -1,3 +1,42 @@
+/**
+ * CS 3331 Advanced Object Oriented Programming
+ * @author Kevin Apodaca, Imani Martin
+ * @since 4/17/19
+ * In this assignment, you are to extend your HW2 program to support
+	multiple items. Focus on the design of the UI. You will learn and
+	become familar with several Swing widgets such as JDialog, JList (or
+	JTable), JMenu, JPopupMenu, JMenuBar and JToolBar. Your application
+	shall meet all the relevant requirements from HW2 as well as the
+	following new ones.
+
+	R1. Provide a way to manage the list of items whose prices are to be
+		watched over. The user should be able to add a new item, remove an
+		existing item, and change an existing item, e.g., rename the item
+		or change its URL (see R3, R4 and R5 below).
+
+	R2. Display all watched items along with their price changes. Consider
+		using a JList (or JTable) for this.
+
+	R3. Use custom dialogs (subclasses of JDialog) to add and change an
+		item in the watch list.
+
+	R4. Improve the user interface by proving a menu and a tool bar to (a)
+		add a new item and (b) to check the current prices of all
+		items. For each menu item, provide an icon, a mnemonic and an
+		accelerator. For each tool bar button, use an icon and provide a
+		tool tip.
+
+	R5. Provide a popup menu to manipulate an indiviual item. Your popup
+		menu shall include menu items for:
+
+		- Checking the current price
+		- Viewing its webpage
+		- Editing it (change the name and URL; see R1 above)
+		- Removing it (see R1 above)
+
+	R6. Use JavaDoc to document your classes. Write a Javadoc comment for
+		each class/interface, field, constructor and method.
+ */
 package PriceWatcher.base;
 
 import PriceWatcher.model.Item;
@@ -16,13 +55,17 @@ import java.text.NumberFormat;
 import java.util.Date;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.border.EmptyBorder;
 
+/**
+ * Creating our JFrame using java swing.
+ */
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 
-
+/**
+ * New instances of the items which we will check the price of.
+ */
     private Item[] items = {
             new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"),
 
@@ -37,7 +80,7 @@ public class Main extends JFrame {
 
 
     /** Default dimension of the dialog. */
-    private final static Dimension DEFAULT_SIZE = new Dimension(500, 405);
+    private final static Dimension DEFAULT_SIZE = new Dimension(500, 300);
 
     /** Special panel to display the watched item. */
     private PriceWatcher.base.ItemView itemView;
@@ -49,12 +92,15 @@ public class Main extends JFrame {
     private JLabel msgBar = new JLabel(" ");
 
     /** Create a new dialog. */
-    private Main() {
+    public Main() {
         this(DEFAULT_SIZE);
     }
 
-    /** Create a new dialog of the given screen dimension. */
-    private Main(Dimension dim) {
+/**
+ * Here we createa  new dialog box with the dimensions passed and we configure all settings needed for things to be displayed properly.
+ * @param dim
+ */
+    public Main(Dimension dim) {
         super("PRICE WATCHER");
 
         this.priceFinder = new PriceWatcher.model.PriceFinder();
@@ -74,7 +120,9 @@ public class Main extends JFrame {
         public MyComponentListener(int width, int height) {
             this.width = width; this.height = height;
         }
-
+/**
+ * Here we resize our windows by getting height and width dimensinos.
+ */
         public void componentResized(ComponentEvent e) {
             Component c = e.getComponent();
             if (c.getWidth() < width || c.getHeight() < height) {
@@ -84,11 +132,10 @@ public class Main extends JFrame {
         }
     }
 
-    /**
-     * Callback to be invoked when the refresh button is clicked. Find the current
-     * price of the watched item and display it along with a percentage price
-     * change.
-     */
+/**
+ * Callback to be invoked when the refresh button is clicked by the user. Method will then find the current price of the watched item and display it along with a percentage price change.
+ * @param event
+ */
     private void refreshButtonClicked(ActionEvent event) {
         for (Item item : this.items) {
             item.updatePrice(this.priceFinder.getNewPrice(item.getURL()));
@@ -96,11 +143,10 @@ public class Main extends JFrame {
         }
         super.repaint();
     }
-
-    /**
-     * Callback to be invoked when the view-page icon is clicked. Launch a (default)
-     * web browser by supplying the URL of the item.
-     */
+/**
+ * Callback to be invoked when the view-page icon is clicked by the user. This will launch the user's default web browser and open the URL of the item chosen.
+ * @param event
+ */
     private void viewPageClicked(ActionEvent event) {
         Desktop desktop = Desktop.getDesktop();
         for (Item item : this.items) {
@@ -158,7 +204,10 @@ public class Main extends JFrame {
         add(pane, BorderLayout.CENTER);
         add(msgBar, BorderLayout.SOUTH);
     }
-
+/**
+ * Adding all menu options available to the user to a menu bar
+ * @return the newly created menu bar
+ */
     private JMenuBar buildMenuBar(){
         JMenuBar menuBar = new JMenuBar();
 
@@ -173,7 +222,14 @@ public class Main extends JFrame {
 
         return menuBar;
     }
-
+/**
+ * Here we create a toolbar that the user will interact with to do the following:
+    *  Add items
+    *  Remove an item
+    *  Edit the information of an item.
+ * @return completed toolbar
+ * @see images folder for all icons used in this method.
+ */
     private JToolBar createToolBar(){
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
@@ -191,6 +247,7 @@ public class Main extends JFrame {
         JButton editBtn = new JButton(rescaleImage(createImageIcon("edit.png")));
         editBtn.setToolTipText("Edit item");
 
+        /** Adding the button options that will be available to the user. */
         toolbar.add(checkPriceBtn);
         toolbar.add(addBtn);
         toolbar.add(removeBtn);
@@ -200,7 +257,11 @@ public class Main extends JFrame {
 
         return toolbar;
     }
-
+/**
+ * Here we create the main menu that will be displayed.
+ * @return the main menu
+ * @see images folder for the about icon.
+ */
     private JMenu createMainMenu(){
         JMenu mainMenu = new JMenu("PriceWatcher");
         JMenuItem about, exit;
@@ -214,12 +275,20 @@ public class Main extends JFrame {
         exit = new JMenuItem("Quit");
 
         mainMenu.add(about);
-        mainMenu.add(exit);
+        mainMenu.add(exit); // closing the system when the user selects to Quit.
 
         return mainMenu;
 
     }
-
+/**
+ * This will create the Edit menu. Users will be able to see and select the options to:
+    * Check the price of the item
+    * Add a new item that the user wants to track the price of.
+    * Remove an item from the list that will no longer be tracked.
+    * Edit the information of an item that is currently being tracked.
+ * @return a menu that allows user to edit
+ * @see images folder for all the icons that we use
+ */
     private JMenu createEditMenu(){
         JMenuItem checkPrices, addItem, removeItem, editItem;
         JMenu editMenu = new JMenu("Edit");
@@ -242,7 +311,7 @@ public class Main extends JFrame {
         editItem = new JMenuItem("Edit Item");
         editItem.setIcon(rescaleImage(createImageIcon("edit.png")));
         editItem.setToolTipText("Edit item");
-
+        /** Calling all methods that will allow buttons to perform their respective actions when clicked. */
         editMenu.add(checkPrices);
         editMenu.add(addItem);
         editMenu.add(removeItem);
@@ -251,7 +320,10 @@ public class Main extends JFrame {
 
         return editMenu;
     }
-
+/**
+ * Menu will allow the user to sort their items based on the price of the item.
+ * @return a menu that has been sorted.
+ */
     private JMenu createSortMenu(){
         JMenuItem priceChange;
         JMenu sortMenu = new JMenu("Sort");
@@ -264,8 +336,11 @@ public class Main extends JFrame {
         return sortMenu;
 
     }
-
-    /** Create price update button. */
+/**
+ * Creating a button that will later be used to reflect the updated price of an item.
+ * @return button to check price update.
+ * @see images folder for check icon
+ */
     private JButton createPriceUpdateButton() {
         ImageIcon icon = rescaleImage(createImageIcon("check.png"));
 
@@ -276,8 +351,11 @@ public class Main extends JFrame {
 
         return button;
     }
-
-    /* Create View Page button */
+/**
+ * Creating a button that will later be used to open a browser and see the item through its URL.
+ * @return button to view the item in the browser.
+ * @see images folder for open link icon.
+ */
     private JButton createViewPageButton() {
         ImageIcon icon = rescaleImage(createImageIcon("openLink.png"));
 
@@ -289,7 +367,12 @@ public class Main extends JFrame {
         return button;
     }
 
-
+/**
+ * Here we simply resize the icons to look better in the JPanel.
+ * @param icon
+ * @return updated and resized icon.
+ * @see images folder for icons and their original sizes.
+ */
     private static ImageIcon rescaleImage(ImageIcon icon){
 
         Image rescaledImage = null;
@@ -302,6 +385,13 @@ public class Main extends JFrame {
         return icon;
     }
 
+/**
+ * Here we load our images onto the JPanel. When another method needs to load an image, this function will search for the image's name and load it onto the panel. Otherwise it will
+ * return an error because the file name was not in the images folder.
+ * @param filename
+ * @return
+ * @see images folder located in PriceWatcher/images/
+ */
     /* Create icon */
     private ImageIcon createImageIcon(String filename) {
         URL imageUrl = getClass().getResource("../images/" + filename);
@@ -312,8 +402,10 @@ public class Main extends JFrame {
             return null;
         }
     }
-
-    /** Show briefly the given string in the message bar. */
+/**
+ * This will load a quick message with the text that the user selected. This will last a total of 3 seconds.
+ * @param msg
+ */
     private void showMessage(String msg) {
         msgBar.setText(msg);
         new Thread(() -> {
@@ -328,6 +420,10 @@ public class Main extends JFrame {
         }).start();
     }
 
+/**
+ * Calling our main method.
+ * @param args
+ */
 
     private JFormattedTextField nameField;
     private JFormattedTextField urlField;
