@@ -56,6 +56,8 @@ import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * Creating our JFrame using java swing.
@@ -249,6 +251,10 @@ public class Main extends JFrame {
         JButton editBtn = new JButton(rescaleImage(createImageIcon("edit.png")));
         editBtn.setToolTipText("Edit item");
 
+        JButton clearBtn = new JButton(rescaleImage(createImageIcon("clear.png")));
+        clearBtn.setToolTipText("Remove all items");
+        clearBtn.addActionListener(new clearAllItems());
+
         /** Adding the button options that will be available to the user. */
         toolbar.add(checkPriceBtn);
         toolbar.add(addBtn);
@@ -256,6 +262,8 @@ public class Main extends JFrame {
         toolbar.add(editBtn);
         toolbar.addSeparator();
         toolbar.add(openWebPageBtn);
+        toolbar.addSeparator();
+        toolbar.add(clearBtn);
 
         return toolbar;
     }
@@ -292,7 +300,7 @@ public class Main extends JFrame {
  * @see images folder for all the icons that we use
  */
     private JMenu createEditMenu(){
-        JMenuItem checkPrices, addItem, removeItem, editItem;
+        JMenuItem checkPrices, addItem, removeItem, editItem, clearItem;
         JMenu editMenu = new JMenu("Edit");
 
         checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
@@ -315,11 +323,17 @@ public class Main extends JFrame {
         editItem.setIcon(rescaleImage(createImageIcon("edit.png")));
         editItem.setToolTipText("Edit item");
 
+        clearItem = new JMenuItem("Clear List");
+        clearItem.setIcon(rescaleImage(createImageIcon("clear.png")));
+        clearItem.setToolTipText("Remove all items");
+        clearItem.addActionListener(new clearAllItems());
+
         /** Calling all methods that will allow buttons to perform their respective actions when clicked. */
         editMenu.add(checkPrices);
         editMenu.add(addItem);
         editMenu.add(removeItem);
         editMenu.add(editItem);
+        editMenu.add(clearItem);
 
 
         return editMenu;
@@ -414,7 +428,7 @@ public class Main extends JFrame {
         msgBar.setText(msg);
         new Thread(() -> {
             try {
-                Thread.sleep(3 * 1000); // 3 seconds
+                Thread.sleep(2 * 1000); // 2 seconds
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -500,15 +514,12 @@ public class Main extends JFrame {
             button.addActionListener(new ItemAdder());
 
 
+
             labelPane.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
             fieldPane.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
             addItemWindow.add(labelPane, BorderLayout.LINE_START);
             addItemWindow.add(fieldPane, BorderLayout.CENTER);
             addItemWindow.add(button, BorderLayout.PAGE_END);
-
-
-//            pane.validate();
-//            pane.repaint();
 
             addItemWindow.pack();
             addItemWindow.setVisible(true);
@@ -527,10 +538,8 @@ public class Main extends JFrame {
                 date = ((String)dateField.getValue());
             }
 
-            // Item newItem = new Item(name, price, url, date);
-
-
         }
+
     }
 
     /* Removes an item from the list */
@@ -541,17 +550,42 @@ public class Main extends JFrame {
             int index = selectionModel.getMinSelectionIndex();
             if(index >= 0)
                 model.remove(index);
+            showMessage("Item Removed!");
+        }
+    }
+
+    /* Remove all items from the list */
+    private class clearAllItems implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            model.clear();
+            showMessage("List Cleared!");
         }
     }
 
 
     private class ItemAdder implements ActionListener{
         public void actionPerformed(ActionEvent event) {
-            System.out.println("Adding Item...");
+            showMessage("New item Added!");
+            ListSelectionModel selectionModel = itemList.getSelectionModel();
+            int index = selectionModel.getMinSelectionIndex();
+            if(index == -1)
+                index = 0;
+            else{
+                index++;
+            }
+
+            // insert item at the end of the list
+            model.addElement(new Item(name, price, url, date));
+
+            // select the new item and make it visible
+            itemList.requestFocusInWindow();
+            itemList.ensureIndexIsVisible(index);
 
         }
     }
 
+    /* Close window when user quits */
     public class ExitListener extends WindowAdapter {
         public void windowClosing(WindowEvent event) {
             System.exit(0);
