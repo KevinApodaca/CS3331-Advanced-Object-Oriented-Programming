@@ -163,6 +163,15 @@ public class Main extends JFrame {
         super.repaint();
     }
 
+    /* Contains test items to ensure app is working */
+    private List<Item> getTestItems(List<Item> items){
+        items.add(new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"));
+        items.add(new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
+        items.add(new Item("Persona 5 PS4", 301.99, "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
+
+        return items;
+    }
+
     /** Configure PriceWatcher.UI. */
     private void configureUI(){
         setLayout(new BorderLayout());
@@ -191,6 +200,20 @@ public class Main extends JFrame {
             model.addElement(items.get(i));
 
         itemList = new JList(model);
+        itemList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(SwingUtilities.isRightMouseButton(e)){
+                    itemList.setSelectedIndex(itemList.locationToIndex(e.getPoint()));
+                    JPopupMenu menu = new JPopupMenu();
+                    JMenuItem rightClickMenu = createEditMenu();
+                    menu.add(rightClickMenu);
+                    menu.show(itemList, e.getPoint().x,e.getPoint().y);
+                }
+            }
+        });
+
+
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemList.setCellRenderer(new ItemListRenderer());
         itemList.setFixedCellHeight(100);
@@ -208,17 +231,12 @@ public class Main extends JFrame {
         add(msgBar, BorderLayout.SOUTH);
     }
 
-    private List<Item> getTestItems(List<Item> items){
-        items.add(new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"));
-        items.add(new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
-        items.add(new Item("Persona 5 PS4", 301.99, "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
 
-        return items;
-    }
 /**
  * Adding all menu options available to the user to a menu bar
  * @return the newly created menu bar
  */
+
     private JMenuBar buildMenuBar(){
         JMenuBar menuBar = new JMenuBar();
 
