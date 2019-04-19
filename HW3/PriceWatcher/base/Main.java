@@ -52,7 +52,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -68,13 +70,9 @@ public class Main extends JFrame {
 /**
  * New instances of the items which we will check the price of.
  */
-    private Item[] items = {
-            new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"),
 
-            new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"),
 
-            new Item("Persona 5 PS4", 301.99, "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019")
-    };
+    private List<Item> items = new ArrayList<>();
 
     private JList itemList;
     private DefaultListModel model;
@@ -171,6 +169,8 @@ public class Main extends JFrame {
         addComponentListener(new MyComponentListener(400, 300));
         addWindowListener(new ExitListener());
 
+        getTestItems(items);
+
         /* JMenu */
         JMenuBar menuBar = buildMenuBar();
 
@@ -187,8 +187,8 @@ public class Main extends JFrame {
 
         /* LIST */
         model = new DefaultListModel();
-        for(int i = 0; i < items.length; i++)
-            model.addElement(items[i]);
+        for(int i = 0; i < items.size(); i++)
+            model.addElement(items.get(i));
 
         itemList = new JList(model);
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -206,6 +206,14 @@ public class Main extends JFrame {
         add(toolbar, BorderLayout.NORTH);
         add(pane, BorderLayout.CENTER);
         add(msgBar, BorderLayout.SOUTH);
+    }
+
+    private List<Item> getTestItems(List<Item> items){
+        items.add(new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"));
+        items.add(new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
+        items.add(new Item("Persona 5 PS4", 301.99, "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
+
+        return items;
     }
 /**
  * Adding all menu options available to the user to a menu bar
@@ -250,6 +258,7 @@ public class Main extends JFrame {
 
         JButton editBtn = new JButton(rescaleImage(createImageIcon("edit.png")));
         editBtn.setToolTipText("Edit item");
+        editBtn.addActionListener(new editItem());
 
         JButton clearBtn = new JButton(rescaleImage(createImageIcon("clear.png")));
         clearBtn.setToolTipText("Remove all items");
@@ -322,6 +331,7 @@ public class Main extends JFrame {
         editItem = new JMenuItem("Edit Item");
         editItem.setIcon(rescaleImage(createImageIcon("edit.png")));
         editItem.setToolTipText("Edit item");
+        editItem.addActionListener(new editItem());
 
         clearItem = new JMenuItem("Clear List");
         clearItem.setIcon(rescaleImage(createImageIcon("clear.png")));
@@ -438,6 +448,12 @@ public class Main extends JFrame {
         }).start();
     }
 
+    /**
+     * Here is where all the action listeners can be found.
+     *
+     *
+     **/
+
     private JFormattedTextField nameField;
     private JFormattedTextField urlField;
     private JFormattedTextField priceField;
@@ -448,6 +464,11 @@ public class Main extends JFrame {
     private double price = 0.00;
     private String date = "";
 
+
+    /*
+    *  When add button is clicked, a new window is opened to enter new item information
+    * @param event
+    * */
     private class AddItemPopUp implements ActionListener, PropertyChangeListener {
         @Override
         public void actionPerformed(ActionEvent event){
@@ -525,6 +546,28 @@ public class Main extends JFrame {
             addItemWindow.setVisible(true);
         }
 
+        /* Appends item to the list */
+        private class ItemAdder implements ActionListener{
+            public void actionPerformed(ActionEvent event) {
+                showMessage("New item Added!");
+                ListSelectionModel selectionModel = itemList.getSelectionModel();
+                int index = selectionModel.getMinSelectionIndex();
+                if(index == -1)
+                    index = 0;
+                else{
+                    index++;
+                }
+
+                // insert item at the end of the list
+                model.addElement(new Item(name, price, url, date));
+
+                // select the new item and make it visible
+                itemList.requestFocusInWindow();
+                itemList.ensureIndexIsVisible(index);
+
+            }
+        }
+
         @Override
         public void propertyChange(PropertyChangeEvent e) {
             Object source = e.getSource();
@@ -534,12 +577,31 @@ public class Main extends JFrame {
                 url = ((String)urlField.getValue());
             } else if (source == priceField) {
                 price = ((Number)priceField.getValue()).doubleValue();
-            }else if (source == dateField){
-                date = ((String)dateField.getValue());
+            }else if (source == dateField) {
+                date = ((String) dateField.getValue());
             }
 
         }
 
+    }
+
+    /* Edit the selected item */
+    private class editItem implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            System.out.println("Editing Item...");
+////            ListSelectionModel selectionModel = itemList.getSelectionModel();
+////            int index = selectionModel.getMinSelectionIndex();
+////            if(index == -1)
+////                return;
+////
+////
+////            model.setElementAt(name, index);
+////
+////            // Item item = new Item("", 0.00, "", "");
+////
+////            showMessage("Item Updated!");
+        }
     }
 
     /* Removes an item from the list */
@@ -560,28 +622,6 @@ public class Main extends JFrame {
         public void actionPerformed(ActionEvent e){
             model.clear();
             showMessage("List Cleared!");
-        }
-    }
-
-
-    private class ItemAdder implements ActionListener{
-        public void actionPerformed(ActionEvent event) {
-            showMessage("New item Added!");
-            ListSelectionModel selectionModel = itemList.getSelectionModel();
-            int index = selectionModel.getMinSelectionIndex();
-            if(index == -1)
-                index = 0;
-            else{
-                index++;
-            }
-
-            // insert item at the end of the list
-            model.addElement(new Item(name, price, url, date));
-
-            // select the new item and make it visible
-            itemList.requestFocusInWindow();
-            itemList.ensureIndexIsVisible(index);
-
         }
     }
 
