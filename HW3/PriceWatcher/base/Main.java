@@ -189,6 +189,7 @@ public class Main extends JFrame {
             model.addElement(items[i]);
 
         itemList = new JList(model);
+        itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemList.setCellRenderer(new ItemListRenderer());
         itemList.setFixedCellHeight(100);
         pane = new JScrollPane(itemList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
@@ -243,6 +244,7 @@ public class Main extends JFrame {
 
         JButton removeBtn = new JButton(rescaleImage(createImageIcon("remove.png")));
         removeBtn.setToolTipText("Remove from list");
+        removeBtn.addActionListener(new removeItem());
 
         JButton editBtn = new JButton(rescaleImage(createImageIcon("edit.png")));
         editBtn.setToolTipText("Edit item");
@@ -307,10 +309,12 @@ public class Main extends JFrame {
         removeItem = new JMenuItem("Remove Item", KeyEvent.VK_D);
         removeItem.setIcon(rescaleImage(createImageIcon("remove.png")));
         removeItem.setToolTipText("Remove from list");
+        removeItem.addActionListener(new removeItem());
 
         editItem = new JMenuItem("Edit Item");
         editItem.setIcon(rescaleImage(createImageIcon("edit.png")));
         editItem.setToolTipText("Edit item");
+
         /** Calling all methods that will allow buttons to perform their respective actions when clicked. */
         editMenu.add(checkPrices);
         editMenu.add(addItem);
@@ -419,11 +423,6 @@ public class Main extends JFrame {
             }
         }).start();
     }
-
-/**
- * Calling our main method.
- * @param args
- */
 
     private JFormattedTextField nameField;
     private JFormattedTextField urlField;
@@ -534,19 +533,22 @@ public class Main extends JFrame {
         }
     }
 
+    /* Removes an item from the list */
+    private class removeItem implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ListSelectionModel selectionModel = itemList.getSelectionModel();
+            int index = selectionModel.getMinSelectionIndex();
+            if(index >= 0)
+                model.remove(index);
+        }
+    }
+
 
     private class ItemAdder implements ActionListener{
         public void actionPerformed(ActionEvent event) {
-            int index = itemList.getSelectedIndex();
-            int size = model.getSize();
+            System.out.println("Adding Item...");
 
-            if(index == -1 || (index + 1 == size)){
-                model.addElement(itemList);
-                itemList.setSelectedIndex(size);
-            }else{
-                model.insertElementAt(itemList, index+1);
-                itemList.setSelectedIndex(index + 1);
-            }
         }
     }
 
@@ -556,6 +558,10 @@ public class Main extends JFrame {
         }
     }
 
+    /**
+     * Calling our main method.
+     * @param args
+     */
     public static void main(String[] args) {
         new Main();
     }
