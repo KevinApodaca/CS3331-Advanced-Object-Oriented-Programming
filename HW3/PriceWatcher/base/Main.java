@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.Key;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -246,9 +247,6 @@ public class Main extends JFrame {
         JMenu editMenu = createEditMenu();
         menuBar.add(editMenu);
 
-        JMenu sortMenu = createSortMenu();
-        menuBar.add(sortMenu);
-
         return menuBar;
     }
 /**
@@ -301,15 +299,15 @@ public class Main extends JFrame {
  */
     private JMenu createMainMenu(){
         JMenu mainMenu = new JMenu("PriceWatcher");
-        JMenuItem about, exit;
-
         mainMenu.setMnemonic(KeyEvent.VK_M);
-        mainMenu.getAccessibleContext().setAccessibleDescription("Main Menu");
+        JMenuItem about, exit;
 
         about = new JMenuItem("About", rescaleImage(createImageIcon("about.png")));
         about.setToolTipText("About PriceWatcher");
 
-        exit = new JMenuItem("Quit");
+        exit = new JMenuItem("Quit", KeyEvent.VK_Q);
+        exit.setMnemonic(KeyEvent.VK_Q);
+        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.ALT_MASK));
 
         mainMenu.add(about);
         mainMenu.add(exit); // closing the system when the user selects to Quit.
@@ -329,29 +327,40 @@ public class Main extends JFrame {
     private JMenu createEditMenu(){
         JMenuItem checkPrices, addItem, removeItem, editItem, clearItem;
         JMenu editMenu = new JMenu("Edit");
+        editMenu.setMnemonic(KeyEvent.VK_T);
 
         checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
+        checkPrices.setMnemonic(KeyEvent.VK_C);
+        checkPrices.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.ALT_MASK));
         checkPrices.setIcon(rescaleImage(createImageIcon("check.png")));
         checkPrices.addActionListener(this::refreshButtonClicked);
         checkPrices.setToolTipText("Check for updated prices");
 
         addItem = new JMenuItem("Add Item", KeyEvent.VK_A);
+        addItem.setMnemonic(KeyEvent.VK_A);
+        addItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.ALT_MASK));
         addItem.setIcon(rescaleImage(createImageIcon("add.png")));
         addItem.setToolTipText("Add an additional item");
         addItem.addActionListener(new AddItemPopUp());
 
 
         removeItem = new JMenuItem("Remove Item", KeyEvent.VK_D);
+        removeItem.setMnemonic(KeyEvent.VK_D);
+        removeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
         removeItem.setIcon(rescaleImage(createImageIcon("remove.png")));
         removeItem.setToolTipText("Remove from list");
         removeItem.addActionListener(new removeItem());
 
-        editItem = new JMenuItem("Edit Item");
+        editItem = new JMenuItem("Edit Item", KeyEvent.VK_E);
+        editItem.setMnemonic(KeyEvent.VK_E);
+        editItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
         editItem.setIcon(rescaleImage(createImageIcon("edit.png")));
         editItem.setToolTipText("Edit item");
         editItem.addActionListener(new editItem());
 
-        clearItem = new JMenuItem("Clear List");
+        clearItem = new JMenuItem("Clear List", KeyEvent.VK_N);
+        clearItem.setMnemonic(KeyEvent.VK_N);
+        clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
         clearItem.setIcon(rescaleImage(createImageIcon("clear.png")));
         clearItem.setToolTipText("Remove all items");
         clearItem.addActionListener(new clearAllItems());
@@ -366,27 +375,13 @@ public class Main extends JFrame {
 
         return editMenu;
     }
-/**
- * Menu will allow the user to sort their items based on the price of the item.
- * @return a menu that has been sorted.
- */
-    private JMenu createSortMenu(){
-        JMenuItem priceChange;
-        JMenu sortMenu = new JMenu("Sort");
-
-        priceChange = new JMenuItem("Price Change (%)");
-        priceChange.setToolTipText("Sort by price change");
-
-        sortMenu.add(priceChange);
-
-        return sortMenu;
-
-    }
-/**
+/*
  * Creating a button that will later be used to reflect the updated price of an item.
  * @return button to check price update.
  * @see images folder for check icon
+ *
  */
+
     private JButton createPriceUpdateButton() {
         ImageIcon icon = rescaleImage(createImageIcon("check.png"));
 
