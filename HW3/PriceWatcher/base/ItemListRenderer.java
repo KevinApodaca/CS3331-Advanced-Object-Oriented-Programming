@@ -23,7 +23,7 @@ class ItemListRenderer extends JLabel implements ListCellRenderer<Item>{
     @Override
     public Component getListCellRendererComponent(JList<? extends Item> list, Item item, int index, boolean isSelected, boolean cellHasFocus){
 
-        String listItems = "<html>Name: " + item.getName() + "<br/>URL: " + item.getURL() + "<br/>Price: $" + item.getCurrentPrice() + "<br/>Change: " + df.format(item.getPriceChange()) + "% <br/>Date Added: " + item.getDateAdded() + " (Initial Price: $" + item.getOriginalPrice() + ")";
+        String listItems = "<html> Name: " + item.getName() + "<br/> URL: " + item.getURL() + "<br/> Price: $" + item.getCurrentPrice() + "<br/> Change: " + df.format(item.getPriceChange()) + "% <br/> Date Added: " + item.getDateAdded() + " (Initial Price: $" + item.getOriginalPrice() + ")";
         setText(listItems);
 
         if(isSelected){
@@ -33,6 +33,9 @@ class ItemListRenderer extends JLabel implements ListCellRenderer<Item>{
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
+
+        revalidate();
+        repaint();
         return this;
 
     }

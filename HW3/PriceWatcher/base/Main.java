@@ -50,17 +50,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.Key;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+
+import static java.awt.event.ActionEvent.*;
 
 /**
  * Creating our JFrame using java swing.
@@ -77,23 +74,18 @@ public class Main extends JFrame {
 
     private JList itemList;
     private DefaultListModel model;
-    JScrollPane pane;
 
 
     /** Default dimension of the dialog. */
     private final static Dimension DEFAULT_SIZE = new Dimension(500, 300);
 
-    /** Special panel to display the watched item. */
-    private PriceWatcher.base.ItemView itemView;
-
-    // private List<Item> itemList;
     private PriceFinder priceFinder;
 
     /** Message bar to display various messages. */
     private JLabel msgBar = new JLabel(" ");
 
     /** Create a new dialog. */
-    public Main() {
+    private Main() {
         this(DEFAULT_SIZE);
     }
 
@@ -101,12 +93,23 @@ public class Main extends JFrame {
  * Here we createa  new dialog box with the dimensions passed and we configure all settings needed for things to be displayed properly.
  * @param dim
  */
-    public Main(Dimension dim) {
+private Main(Dimension dim) {
         super("PRICE WATCHER");
 
         this.priceFinder = new PriceWatcher.model.PriceFinder();
+    try {
+         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+    } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+    } catch (InstantiationException e) {
+        e.printStackTrace();
+    } catch (IllegalAccessException e) {
+        e.printStackTrace();
+    } catch (UnsupportedLookAndFeelException e) {
+        e.printStackTrace();
+    }
 
-        setSize(dim);
+    setSize(dim);
         configureUI();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -118,7 +121,7 @@ public class Main extends JFrame {
     private static class MyComponentListener extends ComponentAdapter {
         private int width, height;
 
-        public MyComponentListener(int width, int height) {
+        MyComponentListener(int width, int height) {
             this.width = width; this.height = height;
         }
 /**
@@ -150,13 +153,14 @@ public class Main extends JFrame {
  */
     private void viewPageClicked(ActionEvent event) {
         Desktop desktop = Desktop.getDesktop();
-        for (Item item : this.items) {
+         for (Item item : this.items) {
+
             try {
                 desktop.browse(new URI(item.getURL()));
                 showMessage("Opening Browser...");
 
             } catch (IOException | URISyntaxException e) {
-                showMessage("Unable to access webpage for " + item.getName() + ".");
+                showMessage("Unable to access webpage for " + item.getName());
             }
 
         }
@@ -165,18 +169,17 @@ public class Main extends JFrame {
     }
 
     /* Contains test items to ensure app is working */
-    private List<Item> getTestItems(List<Item> items){
+    private void getTestItems(List<Item> items){
         items.add(new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"));
         items.add(new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
         items.add(new Item("Persona 5 PS4", 301.99, "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
 
-        return items;
     }
 
     /** Configure PriceWatcher.UI. */
     private void configureUI(){
         setLayout(new BorderLayout());
-        addComponentListener(new MyComponentListener(400, 300));
+        addComponentListener(new MyComponentListener(400, 350));
         addWindowListener(new ExitListener());
 
         getTestItems(items);
@@ -190,17 +193,20 @@ public class Main extends JFrame {
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 5, 10, 16),
                 BorderFactory.createLineBorder(Color.BLACK)));
-        panel.setLayout(new GridLayout(1, 1));
+        panel.setLayout(new GridLayout(1, 1,4,2));
 
 
         setJMenuBar(menuBar);
 
         /* LIST */
         model = new DefaultListModel();
-        for(int i = 0; i < items.size(); i++)
-            model.addElement(items.get(i));
+        for (Item item : items) model.addElement(item);
+
 
         itemList = new JList(model);
+        itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        itemList.setCellRenderer(new ItemListRenderer());
+        itemList.setFixedCellHeight(100);
         itemList.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -208,6 +214,12 @@ public class Main extends JFrame {
                     itemList.setSelectedIndex(itemList.locationToIndex(e.getPoint()));
                     JPopupMenu menu = new JPopupMenu();
                     JMenuItem rightClickMenu = createEditMenu();
+                    JMenuItem visitPage = new JMenuItem("Visit Website", rescaleImage(createImageIcon("openLink.png")));
+
+                    visitPage.setToolTipText("Visit this item's webpage!");
+                    visitPage.addActionListener(Main.this::viewPageClicked);
+                    rightClickMenu.add(visitPage);
+
                     menu.add(rightClickMenu);
                     menu.show(itemList, e.getPoint().x,e.getPoint().y);
                 }
@@ -215,13 +227,10 @@ public class Main extends JFrame {
         });
 
 
-        itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        itemList.setCellRenderer(new ItemListRenderer());
-        itemList.setFixedCellHeight(100);
-        pane = new JScrollPane(itemList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+        JScrollPane pane = new JScrollPane(itemList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        pane.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
+        pane.setBorder(BorderFactory.createEmptyBorder(10,5,10,10));
 
 
         /* Message Bar */
@@ -280,7 +289,7 @@ public class Main extends JFrame {
         clearBtn.setToolTipText("Remove all items");
         clearBtn.addActionListener(new clearAllItems());
 
-        /** Adding the button options that will be available to the user. */
+        /* Adding the button options that will be available to the user. */
         toolbar.add(checkPriceBtn);
         toolbar.add(addBtn);
         toolbar.add(removeBtn);
@@ -307,10 +316,10 @@ public class Main extends JFrame {
 
         exit = new JMenuItem("Quit", KeyEvent.VK_Q);
         exit.setMnemonic(KeyEvent.VK_Q);
-        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.ALT_MASK));
+        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ALT_MASK));
 
         mainMenu.add(about);
-        mainMenu.add(exit); // closing the system when the user selects to Quit.
+        mainMenu.add(exit); // closing the system when the user wants Quit.
 
         return mainMenu;
 
@@ -331,14 +340,14 @@ public class Main extends JFrame {
 
         checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
         checkPrices.setMnemonic(KeyEvent.VK_C);
-        checkPrices.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.ALT_MASK));
+        checkPrices.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ALT_MASK));
         checkPrices.setIcon(rescaleImage(createImageIcon("check.png")));
         checkPrices.addActionListener(this::refreshButtonClicked);
         checkPrices.setToolTipText("Check for updated prices");
 
         addItem = new JMenuItem("Add Item", KeyEvent.VK_A);
         addItem.setMnemonic(KeyEvent.VK_A);
-        addItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.ALT_MASK));
+        addItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ALT_MASK));
         addItem.setIcon(rescaleImage(createImageIcon("add.png")));
         addItem.setToolTipText("Add an additional item");
         addItem.addActionListener(new AddItemPopUp());
@@ -346,21 +355,21 @@ public class Main extends JFrame {
 
         removeItem = new JMenuItem("Remove Item", KeyEvent.VK_D);
         removeItem.setMnemonic(KeyEvent.VK_D);
-        removeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
+        removeItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ALT_MASK));
         removeItem.setIcon(rescaleImage(createImageIcon("remove.png")));
         removeItem.setToolTipText("Remove from list");
         removeItem.addActionListener(new removeItem());
 
         editItem = new JMenuItem("Edit Item", KeyEvent.VK_E);
         editItem.setMnemonic(KeyEvent.VK_E);
-        editItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
+        editItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ALT_MASK));
         editItem.setIcon(rescaleImage(createImageIcon("edit.png")));
         editItem.setToolTipText("Edit item");
         editItem.addActionListener(new editItem());
 
         clearItem = new JMenuItem("Clear List", KeyEvent.VK_N);
         clearItem.setMnemonic(KeyEvent.VK_N);
-        clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+        clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ALT_MASK));
         clearItem.setIcon(rescaleImage(createImageIcon("clear.png")));
         clearItem.setToolTipText("Remove all items");
         clearItem.addActionListener(new clearAllItems());
@@ -475,7 +484,6 @@ public class Main extends JFrame {
     private String name = "";
     private String url = "";
     private double price = 0.00;
-    private String date = "";
 
 
     /*
@@ -485,11 +493,10 @@ public class Main extends JFrame {
     private class AddItemPopUp implements ActionListener, PropertyChangeListener {
         @Override
         public void actionPerformed(ActionEvent event){
-            JFrame addItemWindow = new JFrame("Add New Item");
-            addItemWindow.addComponentListener(new MyComponentListener(400, 350));
+            JFrame addItemWindow = new JFrame();
             addItemWindow.setLocationRelativeTo(null);
             addItemWindow.setBackground(new Color(50,205,50));
-            addItemWindow.setLayout(new BorderLayout());
+            JPanel fieldPane = new JPanel();
 
             /* Strings for labels */
             String nameStr = "Name: ";
@@ -530,38 +537,25 @@ public class Main extends JFrame {
             priceLabel.setLabelFor(priceField);
             dateLabel.setLabelFor(dateField);
 
-            JPanel labelPane = new JPanel(new GridLayout(0,1));
-            JPanel fieldPane = new JPanel(new GridLayout(0,1));
+            fieldPane.setLayout(new GridLayout(0,2,4,2));
 
-            labelPane.add(nameLabel);
-            labelPane.add(urlLabel);
-            labelPane.add(priceLabel);
-            labelPane.add(dateLabel);
-
+            fieldPane.add(new JLabel("Name: "));
             fieldPane.add(nameField);
+
+            fieldPane.add(new JLabel("URL: "));
             fieldPane.add(urlField);
+
+            fieldPane.add(new JLabel("Price: "));
             fieldPane.add(priceField);
+
+            fieldPane.add(new JLabel(("Date: ")));
             fieldPane.add(dateField);
 
-            /* If user clicks "Add", new item will be appended to the list */
-            JButton button = new JButton("Add");
-            button.addActionListener(new ItemAdder());
+            int option = JOptionPane.showConfirmDialog(addItemWindow, fieldPane, "Add New Item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
+            if (option == JOptionPane.OK_OPTION){
 
-
-            labelPane.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
-            fieldPane.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
-            addItemWindow.add(labelPane, BorderLayout.LINE_START);
-            addItemWindow.add(fieldPane, BorderLayout.CENTER);
-            addItemWindow.add(button, BorderLayout.PAGE_END);
-
-            addItemWindow.pack();
-            addItemWindow.setVisible(true);
-        }
-
-        /* Appends item to the list */
-        private class ItemAdder implements ActionListener{
-            public void actionPerformed(ActionEvent event) {
+                /* Append new items to the list */
                 showMessage("New item Added!");
                 ListSelectionModel selectionModel = itemList.getSelectionModel();
                 int index = selectionModel.getMinSelectionIndex();
@@ -572,13 +566,14 @@ public class Main extends JFrame {
                 }
 
                 // insert item at the end of the list
-                model.addElement(new Item(name, price, url, date));
+                model.addElement(new Item(name, price, url, date.toString()));
+                items.add(new Item(name, price, url, date.toString()));
 
                 // select the new item and make it visible
                 itemList.requestFocusInWindow();
                 itemList.ensureIndexIsVisible(index);
-
             }
+
         }
 
         @Override
@@ -591,7 +586,7 @@ public class Main extends JFrame {
             } else if (source == priceField) {
                 price = ((Number)priceField.getValue()).doubleValue();
             }else if (source == dateField) {
-                date = ((String) dateField.getValue());
+                Date date = ((Date) dateField.getValue());
             }
 
         }
@@ -602,18 +597,50 @@ public class Main extends JFrame {
     private class editItem implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            System.out.println("Editing Item...");
-////            ListSelectionModel selectionModel = itemList.getSelectionModel();
-////            int index = selectionModel.getMinSelectionIndex();
-////            if(index == -1)
-////                return;
-////
-////
-////            model.setElementAt(name, index);
-////
-////            // Item item = new Item("", 0.00, "", "");
-////
-////            showMessage("Item Updated!");
+            JFrame editItemWindow = new JFrame("Edit New Item");
+            JPanel panel = new JPanel();
+            editItemWindow.addComponentListener(new MyComponentListener(400, 350));
+            editItemWindow.setLocationRelativeTo(null);
+
+            ListSelectionModel selectionModel = itemList.getSelectionModel();
+            int index = selectionModel.getMinSelectionIndex();
+
+            if(index == -1)
+                return;
+
+            /* Creating new window for editing selected item */
+            panel.setLayout(new GridLayout(0,2,4,2));
+
+            JTextField newNameField = new JTextField(5);
+            JTextField newUrlField = new JTextField(5);
+
+            panel.add(new JLabel("Please enter a new name: "));
+            panel.add(newNameField);
+
+            panel.add(new JLabel("Please enter a new URL: "));
+            panel.add(newUrlField);
+
+            int option = JOptionPane.showConfirmDialog(editItemWindow, panel, "Edit Item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+            if (option == JOptionPane.OK_OPTION) {
+                String newItemName = newNameField.getText();
+                String newItemUrl = newUrlField.getText();
+
+                for (Item item : items) {
+                    if (!newItemName.isEmpty()) {
+                        model.remove(index);
+                        model.add(index, new Item(newItemName, item.getCurrentPrice(), newItemUrl, item.getDateAdded()));
+                    }
+                }
+
+                /* When item is edited, a confirmation window will pop up */
+                panel = new JPanel();
+                panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+                panel.add(new Label("Item successfully updated!"));
+                JOptionPane.showMessageDialog(editItemWindow, panel);
+            }
+
+            showMessage("Item Updated!");
         }
     }
 
