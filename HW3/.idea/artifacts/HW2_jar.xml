@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="HW2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/HW2_jar</output-path>
+    <root id="archive" name="HW2.jar">
+      <element id="module-output" name="HW2" />
+      <element id="dir-copy" path="$PROJECT_DIR$/PriceWatcher/images" />
+    </root>
+  </artifact>
+</component>
