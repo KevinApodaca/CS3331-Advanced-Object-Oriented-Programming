@@ -7,25 +7,27 @@ requirements from the previous homework assignments as well as the
 following new ones.
 
 ### R1. 
-  The application shall find the price of a watched item from the
-    item's Web page. Remember that the URL of an item is provided by
-    the user when the item is added to the watch list.
-    
-      a. It shall inform the user if the price of an item can't be found
-         (e.g., malformed or non-existing URL).
+    The application shall find the price of a watched item from the
+      item's Web page. Remember that the URL of an item is provided by
+      the user when the item is added to the watch list.
 
-      b. It shall support item pages from at least three different
-         online stores.
+        a. It shall inform the user if the price of an item can't be found
+           (e.g., malformed or non-existing URL).
 
-R2. The application shall persist watched items. The items should be
-    stored in an external storage to so that they can be available
-    when the application is closed and launched later.
+        b. It shall support item pages from at least three different
+           online stores.
 
-R3. You should separate network and database operations into separate
-    modules (or classes) to decouple them from the rest of the code.
-    Consider introducing new subclasses of the PriceFinder and
-    ItemManager classes.
+### R2. 
+    The application shall persist watched items. The items should be
+        stored in an external storage to so that they can be available
+        when the application is closed and launched later.
 
+### R3. 
+    You should separate network and database operations into separate
+        modules (or classes) to decouple them from the rest of the code.
+        Consider introducing new subclasses of the PriceFinder and
+        ItemManager classes.
+### Requirements
 1. (10 points) Design your application and document your design by
    drawing a UML class diagram [Chapter 4 of 1]. You should focus on
    designing those classes that are modified (from your HW3 design) or
@@ -54,7 +56,7 @@ R3. You should separate network and database operations into separate
    (10+ points) Provide a way to filter displayed items, e.g., all
       items from a selected store, or to sort displayed items.
 
-HINTS
+#### HINTS
    
    Reuse your HW3 design and code as much as possible. For example,
    define HW4 Main as a subclass of HW3 Main.
@@ -96,14 +98,14 @@ HINTS
     To save/restore a list of items, use a JSONArray.
 
    To test price changes, use the following URL that shows a fake
-   item: http://www.cs.utep.edu/cheon/cs3331/homework/hw4/.
+   item: (http://www.cs.utep.edu/cheon/cs3331/homework/hw4/).
 
-TESTING
+#### TESTING
 
    Your code should compile and run correctly under Java 8 or later
    versions.
 
-WHAT AND HOW TO TURN IN
+#### WHAT AND HOW TO TURN IN
 
    You should submit hard copies of your UML diagrams along with
    accompanying documents before the class on the due date. Your hard
@@ -129,12 +131,12 @@ WHAT AND HOW TO TURN IN
    on upload file size and the maximum file size is 2MB. You should
    turn in your programs by 11:59 pm on the due date.
 
-DEMO
+#### DEMO
 
    You will need to make one or two minutes demo of your application
    to the course staff.
 
-GRADING
+#### GRADING
 
    You will be graded on the quality of the design and how clear your
    code is. Excessively long code will be penalized: don't repeat code
@@ -143,7 +145,7 @@ GRADING
 
    Be sure your name is in the comments in your code.
 
-REFERENCES 
+#### REFERENCES 
 
    [1] Martina Seidl, et al., UML@Classroom: An Introduction to
        Object-Oriented Modeling, Springer, 2015. Free ebook through
