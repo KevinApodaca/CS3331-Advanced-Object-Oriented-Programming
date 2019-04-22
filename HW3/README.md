@@ -1,4 +1,4 @@
-# Price Watcher version 3
+# Price Watcher Version 3
 
 In this assignment, you are to extend your HW2 program to support
 multiple items. Focus on the design of the UI. You will learn and
