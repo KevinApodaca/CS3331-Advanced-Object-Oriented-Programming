@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"PriceWatcher.base"},{"l":"PriceWatcher.console"},{"l":"PriceWatcher.model"}]

@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"PriceWatcher.model","l":"Item"},{"p":"PriceWatcher.base","l":"ItemView"},{"p":"PriceWatcher.base","l":"ItemView.ClickListener"},{"p":"PriceWatcher.base","l":"Main"},{"p":"PriceWatcher.base","l":"Main.ExitListener"},{"p":"PriceWatcher.model","l":"PriceFinder"},{"p":"PriceWatcher.console","l":"UI"}]
