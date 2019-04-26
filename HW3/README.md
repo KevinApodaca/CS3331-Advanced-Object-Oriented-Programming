@@ -7,6 +7,8 @@ JTable), JMenu, JPopupMenu, JMenuBar and JToolBar. Your application
 shall meet all the relevant requirements from HW2 as well as the
 following new ones.
 
+![Demo gif](https://media.giphy.com/media/Uqe7LXQ8s8v6UBOSap/giphy.gif)
+
 ### R1. 
     Provide a way to manage the list of items whose prices are to be
     watched over. The user should be able to add a new item, remove an
