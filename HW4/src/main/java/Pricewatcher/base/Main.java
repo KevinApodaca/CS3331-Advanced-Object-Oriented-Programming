@@ -662,8 +662,8 @@ private Main(Dimension dim) {
         public void actionPerformed(ActionEvent e){
             JFrame clearItemWindow = new JFrame();
             clearItemWindow.setLocationRelativeTo(null);
-            clearItemWindow.setBackground(Color.red);
             JPanel confirmPanel = new JPanel();
+            confirmPanel.add(new Label("Are you sure you want to delete all items?"));
 
 
             int option = JOptionPane.showConfirmDialog(clearItemWindow, confirmPanel, "Clear All Items", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -671,6 +671,7 @@ private Main(Dimension dim) {
             if (option == JOptionPane.YES_OPTION) {
                 model.clear();
                 showMessage("List Cleared!");
+                JOptionPane.showMessageDialog(clearItemWindow, "List successfully deleted!");
             }
         }
     }
