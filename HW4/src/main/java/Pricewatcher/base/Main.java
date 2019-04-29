@@ -256,6 +256,9 @@ private Main(Dimension dim) {
         JMenu editMenu = createEditMenu();
         menuBar.add(editMenu);
 
+        JMenu sortMenu = createSortMenu();
+        menuBar.add(sortMenu);
+
         return menuBar;
     }
 /**
@@ -277,6 +280,14 @@ private Main(Dimension dim) {
         addBtn.setToolTipText("Add an additional item");
         addBtn.addActionListener(new AddItemPopUp());
 
+        JButton firstItemBtn = new JButton(rescaleImage(createImageIcon("firstItem.png")));
+        firstItemBtn.setToolTipText("Go to first item in list");
+        firstItemBtn.addActionListener(new firstItemOfList());
+
+        JButton lastItemBtn = new JButton(rescaleImage(createImageIcon("lastItem.png")));
+        lastItemBtn.setToolTipText("Go to last item in list");
+        lastItemBtn.addActionListener(new lastItemOfList());
+
         JButton removeBtn = new JButton(rescaleImage(createImageIcon("remove.png")));
         removeBtn.setToolTipText("Remove from list");
         removeBtn.addActionListener(new removeItem());
@@ -291,13 +302,14 @@ private Main(Dimension dim) {
 
         /* Adding the button options that will be available to the user. */
         toolbar.add(checkPriceBtn);
+        toolbar.add(editBtn);
         toolbar.add(addBtn);
         toolbar.add(removeBtn);
-        toolbar.add(editBtn);
+        toolbar.add(firstItemBtn);
+        toolbar.add(lastItemBtn);
+        toolbar.add(clearBtn);
         toolbar.addSeparator();
         toolbar.add(openWebPageBtn);
-        toolbar.addSeparator();
-        toolbar.add(clearBtn);
 
         return toolbar;
     }
@@ -336,7 +348,6 @@ private Main(Dimension dim) {
     private JMenu createEditMenu(){
         JMenuItem checkPrices, addItem, removeItem, editItem, clearItem;
         JMenu editMenu = new JMenu("Edit");
-        editMenu.setMnemonic(KeyEvent.VK_T);
 
         checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
         checkPrices.setMnemonic(KeyEvent.VK_C);
@@ -384,6 +395,44 @@ private Main(Dimension dim) {
 
         return editMenu;
     }
+
+    /**
+     * This will create the Sort menu. Users will be able to see and select the options to:
+     * Skip to the first item of the list
+     * Skip to the second item of the list
+     * @return a menu that allows user to sort
+     * @see images folder for all the icons that we use
+     */
+    private JMenu createSortMenu(){
+        JMenuItem skipToFirstItem, skipToLastItem;
+        JMenu sortMenu = new JMenu("Sort");
+
+        /* Go to first item in list */
+        skipToFirstItem = new JMenuItem("Go To First Item", KeyEvent.VK_F);
+        skipToFirstItem.setMnemonic(KeyEvent.VK_F);
+        skipToFirstItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ALT_MASK));
+        skipToFirstItem.setIcon(rescaleImage(createImageIcon("firstItem.png")));
+        skipToFirstItem.addActionListener(new firstItemOfList());
+        skipToFirstItem.setToolTipText("Go to first item in list");
+
+
+        /* Go to last item in the list */
+        skipToLastItem = new JMenuItem("Go To Last Item", KeyEvent.VK_L);
+        skipToLastItem.setMnemonic(KeyEvent.VK_L);
+        skipToLastItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ALT_MASK));
+        skipToLastItem.setIcon(rescaleImage(createImageIcon("lastItem.png")));
+        skipToLastItem.addActionListener(new lastItemOfList());
+        skipToLastItem.setToolTipText("Go to last item in list");
+
+
+        /** Calling all methods that will allow buttons to perform their respective actions when clicked. */
+
+        sortMenu.add(skipToFirstItem);
+        sortMenu.add(skipToLastItem);
+
+        return sortMenu;
+    }
+
 /*
  * Creating a button that will later be used to reflect the updated price of an item.
  * @return button to check price update.
@@ -593,6 +642,31 @@ private Main(Dimension dim) {
 
     }
 
+    /* Skip to first item of the list */
+    private class firstItemOfList implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            int firstIndex = itemList.getFirstVisibleIndex();
+            if(firstIndex == 0) {
+                itemList.setSelectedIndex(firstIndex);
+                itemList.ensureIndexIsVisible(firstIndex);
+            }
+        }
+    }
+
+    /* Skip to last item of the list */
+    private class lastItemOfList implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+             int lastIndex = itemList.getModel().getSize()-1;
+             if(lastIndex >= 0) {
+                 itemList.setSelectedIndex(lastIndex);
+                 itemList.ensureIndexIsVisible(lastIndex);
+            }
+
+        }
+    }
+
     /* Edit the selected item */
     private class editItem implements ActionListener{
         @Override
@@ -627,7 +701,7 @@ private Main(Dimension dim) {
                 String newItemUrl = newUrlField.getText();
 
                 for (Item item : items) {
-                    if (!newItemName.isEmpty()) {
+                    if (!newItemName.isEmpty() && !newItemUrl.isEmpty()) {
                         model.remove(index);
                         model.add(index, new Item(newItemName, item.getCurrentPrice(), newItemUrl, item.getDateAdded()));
                     }
