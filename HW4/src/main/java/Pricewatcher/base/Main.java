@@ -648,10 +648,26 @@ private Main(Dimension dim) {
     private class removeItem implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            JFrame deleteCurrentItemWindow = new JFrame();
+            deleteCurrentItemWindow.setLocationRelativeTo(null);
+            JPanel confirmPanel = new JPanel();
+            confirmPanel.add(new Label("Are you sure you want to delete this item?"));
+
             ListSelectionModel selectionModel = itemList.getSelectionModel();
             int index = selectionModel.getMinSelectionIndex();
-            if(index >= 0)
-                model.remove(index);
+
+
+            /* Confirm with user that they want to remove the selected item */
+            int option = JOptionPane.showConfirmDialog(deleteCurrentItemWindow, confirmPanel, "Remove Item", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+            if (option == JOptionPane.YES_OPTION){
+                if(index >= 0)
+                    model.remove(index);
+
+                /* Confirmation that item has been deleted */
+                JOptionPane.showMessageDialog(deleteCurrentItemWindow, "Item successfully removed!");
+
+            }
             showMessage("Item Removed!");
         }
     }
@@ -666,6 +682,7 @@ private Main(Dimension dim) {
             confirmPanel.add(new Label("Are you sure you want to delete all items?"));
 
 
+            /* Confirm with user that they want to delete all items in list */
             int option = JOptionPane.showConfirmDialog(clearItemWindow, confirmPanel, "Clear All Items", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
             if (option == JOptionPane.YES_OPTION) {
