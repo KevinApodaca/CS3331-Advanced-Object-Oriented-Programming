@@ -1,6 +1,6 @@
-package PriceWatcher.base;
+package src.main.java.Pricewatcher.base;
 
-import PriceWatcher.model.Item;
+import src.main.java.Pricewatcher.model.Item;
 
 import javax.swing.*;
 import java.awt.*;

@@ -37,10 +37,10 @@
 	R6. Use JavaDoc to document your classes. Write a Javadoc comment for
 		each class/interface, field, constructor and method.
  */
-package PriceWatcher.console;
+package src.main.java.Pricewatcher.console;
 
-import PriceWatcher.model.Item;
-import PriceWatcher.model.PriceFinder;
+import src.main.java.Pricewatcher.model.Item;
+import src.main.java.Pricewatcher.model.PriceFinder;
 
 import java.awt.*;
 import java.util.List;

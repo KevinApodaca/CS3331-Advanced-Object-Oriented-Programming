@@ -37,7 +37,7 @@
 	R6. Use JavaDoc to document your classes. Write a Javadoc comment for
 		each class/interface, field, constructor and method.
  */
-package PriceWatcher.model;
+package src.main.java.Pricewatcher.model;
 
 import java.math.BigDecimal;
 /**

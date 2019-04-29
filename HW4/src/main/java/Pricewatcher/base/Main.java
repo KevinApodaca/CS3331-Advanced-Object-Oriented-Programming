@@ -37,10 +37,10 @@
 	R6. Use JavaDoc to document your classes. Write a Javadoc comment for
 		each class/interface, field, constructor and method.
  */
-package PriceWatcher.base;
+package src.main.java.Pricewatcher.base;
 
-import PriceWatcher.model.Item;
-import PriceWatcher.model.PriceFinder;
+import src.main.java.Pricewatcher.model.Item;
+import src.main.java.Pricewatcher.model.PriceFinder;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -96,7 +96,7 @@ public class Main extends JFrame {
 private Main(Dimension dim) {
         super("PRICE WATCHER");
 
-        this.priceFinder = new PriceWatcher.model.PriceFinder();
+        this.priceFinder = new PriceFinder();
     try {
          UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
     } catch (ClassNotFoundException e) {

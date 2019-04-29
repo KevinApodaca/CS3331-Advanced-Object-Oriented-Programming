@@ -37,22 +37,19 @@
 	R6. Use JavaDoc to document your classes. Write a Javadoc comment for
 		each class/interface, field, constructor and method.
  */
-package PriceWatcher.base;
+package src.main.java.Pricewatcher.base;
 
-import PriceWatcher.model.Item;
+import src.main.java.Pricewatcher.model.Item;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.List;
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
 /** A special panel to display the detail of an item. */
 
