@@ -348,6 +348,20 @@ private Main(Dimension dim) {
         exit = new JMenuItem("Quit", KeyEvent.VK_Q);
         exit.setMnemonic(KeyEvent.VK_Q);
         exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ALT_MASK));
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame exitWindow = new JFrame();
+                JPanel confimPanel = new JPanel();
+                confimPanel.add(new Label("Are you want to go?"));
+
+                int option = JOptionPane.showConfirmDialog(exitWindow, confimPanel, "Exit PriceWatcher", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+                if (option == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
 
         mainMenu.add(about);
         mainMenu.add(exit); // closing the system when the user wants Quit.

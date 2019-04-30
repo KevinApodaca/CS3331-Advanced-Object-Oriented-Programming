@@ -54,7 +54,7 @@ import java.util.List;
 /** A special panel to display the detail of an item. */
 
 @SuppressWarnings("serial")
-public class ItemView extends JPanel {
+class ItemView extends JPanel {
 
     DecimalFormat df = new DecimalFormat("##.##");
     private List<Item> itemList;
