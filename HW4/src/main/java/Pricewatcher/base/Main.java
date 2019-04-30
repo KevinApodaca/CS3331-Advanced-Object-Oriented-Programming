@@ -52,6 +52,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -324,6 +325,24 @@ private Main(Dimension dim) {
         JMenuItem about, exit;
 
         about = new JMenuItem("About", rescaleImage(createImageIcon("about.png")));
+        about.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame aboutWindow = new JFrame("About PriceWatcher App");
+                setLayout(new BorderLayout());
+                aboutWindow.setLocationRelativeTo(null);
+                JPanel infoPanel = new JPanel();
+
+                JLabel title = new JLabel("PriceWatcher App\t");
+                JLabel authors = new JLabel("Copyright 2019 Imani Martin & Kevin Apodaca");
+
+                infoPanel.add(title);
+                infoPanel.add(authors);
+
+                JOptionPane.showMessageDialog(aboutWindow, infoPanel);
+
+            }
+        });
         about.setToolTipText("About PriceWatcher");
 
         exit = new JMenuItem("Quit", KeyEvent.VK_Q);
@@ -404,7 +423,7 @@ private Main(Dimension dim) {
      * @see images folder for all the icons that we use
      */
     private JMenu createSortMenu(){
-        JMenuItem skipToFirstItem, skipToLastItem;
+        JMenuItem skipToFirstItem, skipToLastItem, sortItem;
         JMenu sortMenu = new JMenu("Sort");
 
         /* Go to first item in list */
@@ -426,7 +445,6 @@ private Main(Dimension dim) {
 
 
         /** Calling all methods that will allow buttons to perform their respective actions when clicked. */
-
         sortMenu.add(skipToFirstItem);
         sortMenu.add(skipToLastItem);
 
