@@ -40,7 +40,8 @@
 package src.main.java.Pricewatcher.base;
 
 import src.main.java.Pricewatcher.model.Item;
-import src.main.java.Pricewatcher.model.PriceFinder;
+// import src.main.java.Pricewatcher.model.PriceFinder;
+import src.main.java.Pricewatcher.model.WebPriceFinder;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -80,7 +81,8 @@ public class Main extends JFrame {
     /** Default dimension of the dialog. */
     private final static Dimension DEFAULT_SIZE = new Dimension(500, 300);
 
-    private PriceFinder priceFinder;
+    //private PriceFinder priceFinder;
+    private WebPriceFinder webPriceFinder;
 
     /** Message bar to display various messages. */
     private JLabel msgBar = new JLabel(" ");
@@ -97,7 +99,8 @@ public class Main extends JFrame {
 private Main(Dimension dim) {
         super("PRICE WATCHER");
 
-        this.priceFinder = new PriceFinder();
+        // this.priceFinder = new PriceFinder();
+    this.webPriceFinder = new WebPriceFinder();
     try {
          UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
     } catch (ClassNotFoundException e) {
@@ -142,8 +145,14 @@ private Main(Dimension dim) {
  * @param event
  */
     private void refreshButtonClicked(ActionEvent event) {
+        System.out.println("Refresh button clicked!");
         for (Item item : this.items) {
-            item.updatePrice(this.priceFinder.getNewPrice(item.getURL()));
+//            item.updatePrice(this.priceFinder.getNewPrice(item.getURL()));
+            item.getCurrentPrice();
+//            for (int i = 0; i < this.items.size(); i++){
+                System.out.println("Item " + item.getName() + ": Price: " + item.getCurrentPrice());
+//            }
+
             showMessage("New Price Updated!");
         }
         super.repaint();
@@ -646,9 +655,12 @@ private Main(Dimension dim) {
                     index++;
                 }
 
-                // insert item at the end of the list
-                model.addElement(new Item(name, price, url, date.toString()));
-                items.add(new Item(name, price, url, date.toString()));
+                // check if url entered is valid
+                if(webPriceFinder.checkIfValid(url)){
+                    // insert item at the end of the list
+                    model.addElement(new Item(name, webPriceFinder.getWebPrice(url), url, date.toString()));
+                    items.add(new Item(name, webPriceFinder.getWebPrice(url), url, date.toString()));
+                }
 
                 // select the new item and make it visible
                 itemList.requestFocusInWindow();
@@ -665,7 +677,8 @@ private Main(Dimension dim) {
             } else if (source == urlField) {
                 url = ((String)urlField.getValue());
             } else if (source == priceField) {
-                price = ((Number)priceField.getValue()).doubleValue();
+                // price = ((Number)priceField.getValue()).doubleValue();
+                price = (double) webPriceFinder.getWebPrice(url);
             }else if (source == dateField) {
                 Date date = ((Date) dateField.getValue());
             }
@@ -736,6 +749,9 @@ private Main(Dimension dim) {
                     if (!newItemName.isEmpty() && !newItemUrl.isEmpty()) {
                         model.remove(index);
                         model.add(index, new Item(newItemName, item.getCurrentPrice(), newItemUrl, item.getDateAdded()));
+
+                        items.remove(index);
+                        items.add(index, new Item(newItemName, item.getCurrentPrice(), newItemUrl, item.getDateAdded()));
                     }
                 }
 
@@ -767,8 +783,10 @@ private Main(Dimension dim) {
             int option = JOptionPane.showConfirmDialog(deleteCurrentItemWindow, confirmPanel, "Remove Item", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
             if (option == JOptionPane.YES_OPTION){
-                if(index >= 0)
+                if(index >= 0) {
                     model.remove(index);
+                    items.remove(index);
+                }
 
                 /* Confirmation that item has been deleted */
                 JOptionPane.showMessageDialog(deleteCurrentItemWindow, "Item successfully removed!");
@@ -793,6 +811,7 @@ private Main(Dimension dim) {
 
             if (option == JOptionPane.YES_OPTION) {
                 model.clear();
+                items.clear();
                 showMessage("List Cleared!");
                 JOptionPane.showMessageDialog(clearItemWindow, "List successfully deleted!");
             }
