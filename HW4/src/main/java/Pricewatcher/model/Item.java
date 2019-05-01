@@ -42,7 +42,7 @@ package src.main.java.Pricewatcher.model;
 public class Item {
 
 	private String name;
-	private double originalPrice,currentPrice,priceChange;
+	private String originalPrice,currentPrice,priceChange;
 	private String url, dateAdded;
 
 /**
@@ -52,41 +52,41 @@ public class Item {
  * @param url
  * @param dateAdded
  */	
-	public Item(String name, double price, String url, String dateAdded) {
+	public Item(String name, String price, String url, String dateAdded) {
 		this.name = name;
 		this.currentPrice = price;
 		this.originalPrice = price;
 		this.url = url;
-		this.priceChange =  0.0;
+		this.priceChange =  "0.0";
 		this.dateAdded = dateAdded;
 	}
 /**
  * Here we do our setters and getters of different methods for the item class.
  * 
  */	
-	public void updatePrice(double newPrice) {
-		this.priceChange =  ((newPrice - this.originalPrice) / (this.originalPrice)) * 100;
-		this.currentPrice = newPrice;
-	}
+//	public void updatePrice(double newPrice) {
+//		this.priceChange =  ((newPrice - this.originalPrice) / (this.originalPrice)) * 100;
+//		this.currentPrice = newPrice;
+//	}
 /**
  * Method will show original price.
  * @return a new instance of original price.
  */	
-	public double getOriginalPrice() {
-		return this.originalPrice;
-	}
+//	public double getOriginalPrice() {
+//		return this.originalPrice;
+//	}
 /**
  * Method will show current price of an item.
  * @return the current price of some item.
  */	
-	public double getCurrentPrice() {
+	public String getCurrentPrice() {
 		return this.currentPrice;
 	}
 /**
  * Method will get the price change of an item.
  * @return the change in price of an item.
  */	
-	public double getPriceChange() {
+	public String getPriceChange() {
 		return this.priceChange;
 	}
 /**
@@ -114,21 +114,21 @@ public class Item {
  * Method will take in an original price for an item and set it as the price for the item.
  * @param originalPrice
  */	
-	public void setOriginalPrice(double originalPrice) {
+	public void setOriginalPrice(String originalPrice) {
 		this.originalPrice = originalPrice;
 	}
 /**
  * Method will take in a price of the item and set it as the current price of that item.
  * @param currentPrice
  */	
-	public void setCurrentPrice(double currentPrice) {
+	public void setCurrentPrice(String currentPrice) {
 		this.currentPrice = currentPrice;
 	}
 /**
  * Method will take in a price for an item and set it as the change of price for it.
  * @param priceChange
  */	
-	public void setPriceChange(double priceChange) {
+	public void setPriceChange(String priceChange) {
 		this.priceChange = priceChange;
 	}
 /**

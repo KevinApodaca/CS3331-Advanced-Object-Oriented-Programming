@@ -1,7 +1,5 @@
 package src.main.java.Pricewatcher.model;
 
-import src.main.java.Pricewatcher.base.Main;
-import src.main.java.Pricewatcher.model.Item;
 import java.io.IOException;
 import java.net.URL;
 import org.jsoup.Jsoup;
@@ -20,17 +18,18 @@ public class WebPriceFinder extends PriceFinder{
 
     }
 
-    public Double getWebPrice(String url){
+    public String getWebPrice(String url){
         System.out.println("Running...");
         System.out.println("url: " + url);
         Document document;
+        Elements info = new Elements();
         // Elements price = new Elements();
         // if(checkIfValid(url)){
             try {
                 document = Jsoup.connect(url).get();
                 System.out.println("Title: " + document.title());
-                Elements info = document.getElementsByTag("p");
-                System.out.println("Printing paras....");
+                info = document.select("p span:contains($)");
+                System.out.println("Printing Price....");
                 for(Element paragraph : info){
                     System.out.println(paragraph.text());
                 }
@@ -39,7 +38,7 @@ public class WebPriceFinder extends PriceFinder{
                 e.printStackTrace();
             }
             System.out.println("Price Extracted!");
-            return 2.0;
+            return info.text();
     }
 
     /* Check if a url is valid */

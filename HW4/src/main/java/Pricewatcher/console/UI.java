@@ -60,7 +60,7 @@ public class UI {
 		String testItemUrl = "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022";
 		String testItemName = "LED monitor";
 		String testDateAdded = "3/4/19";
-		double testItemInitialPrice = 61.13;
+		String testItemInitialPrice = "61.13";
 		
 		Item testItem = new Item(testItemName, testItemInitialPrice, testItemUrl, testDateAdded);
 		List<Item> testItemList = new ArrayList<>();
@@ -76,7 +76,7 @@ public class UI {
 			System.out.println("Price: " + item.getCurrentPrice());
 			System.out.println("Change: " + item.getPriceChange() + "%");
 
-			System.out.println("Date Added: " + item.getDateAdded() + "($" + String.format("%.2f", item.getOriginalPrice()) + ")");
+			System.out.println("Date Added: " + item.getDateAdded() + "($" + String.format("%.2f", item.getCurrentPrice()) + ")");
 		}
 	}
 	
@@ -125,7 +125,7 @@ public class UI {
 			if (userChoice == 1) {
 				for (Item item: itemList) {
 					PriceFinder finder = new PriceFinder();
-					item.updatePrice(finder.getNewPrice(item.getURL()));
+					//item.updatePrice(finder.getNewPrice(item.getURL()));
 				}
 				displayItems(itemList);
 				userChoice = getUserChoice(reader);

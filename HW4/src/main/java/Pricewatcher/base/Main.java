@@ -180,9 +180,9 @@ private Main(Dimension dim) {
 
     /* Contains test items to ensure app is working */
     private void getTestItems(List<Item> items){
-        items.add(new Item("LED monitor", 61.13, "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"));
-        items.add(new Item("Wireless Charger", 11.04, "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
-        items.add(new Item("Persona 5 PS4", 301.99, "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
+        items.add(new Item("LED monitor", "61.13", "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"));
+        items.add(new Item("Wireless Charger", "11.04", "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
+        items.add(new Item("Persona 5 PS4", "301.99", "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
 
     }
 
@@ -573,7 +573,7 @@ private Main(Dimension dim) {
 
     private String name = "";
     private String url = "";
-    private double price = 0.00;
+    private String price = "0.00";
 
 
     /*
@@ -678,7 +678,7 @@ private Main(Dimension dim) {
                 url = ((String)urlField.getValue());
             } else if (source == priceField) {
                 // price = ((Number)priceField.getValue()).doubleValue();
-                price = (double) webPriceFinder.getWebPrice(url);
+                price = (String) webPriceFinder.getWebPrice(url);
             }else if (source == dateField) {
                 Date date = ((Date) dateField.getValue());
             }

@@ -125,7 +125,7 @@ class ItemView extends JPanel {
             y += 20;
             g.drawString("Change: " + df.format(item.getPriceChange()) + "%", x, y);
             y += 20;
-            g.drawString("Date Added: " + item.getDateAdded() + " ($" + df.format(item.getOriginalPrice()) + ")", x, y);
+            g.drawString("Date Added: " + item.getDateAdded() + " ($" + df.format(item.getCurrentPrice()) + ")", x, y);
             y += 40;
         }
     }
