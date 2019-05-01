@@ -23,7 +23,7 @@ class ItemListRenderer extends JLabel implements ListCellRenderer<Item>{
     @Override
     public Component getListCellRendererComponent(JList<? extends Item> list, Item item, int index, boolean isSelected, boolean cellHasFocus){
 
-        String listItems = "<html> Name: " + item.getName() + "<br/> URL: " + item.getURL() + "<br/> Price: $" + item.getCurrentPrice() + "<br/> Change: " + item.getPriceChange() + "% <br/> Date Added: " + item.getDateAdded() + " (Initial Price: " + item.getCurrentPrice() + ")";
+        String listItems = "<html> Name: " + item.getName() + "<br/> URL: " + item.getURL() + "<br/> Price: " + item.getCurrentPrice() + "<br/> Change: " + item.getPriceChange() + "% <br/> Date Added: " + item.getDateAdded() + " (Initial Price: " + item.getCurrentPrice() + ")";
         setText(listItems);
 
         if(isSelected){

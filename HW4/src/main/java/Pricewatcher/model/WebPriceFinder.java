@@ -24,32 +24,23 @@ public class WebPriceFinder extends PriceFinder{
         System.out.println("Running...");
         System.out.println("url: " + url);
         Document document;
-        // Elements priceDiv = new Elements();
-         Element info = null;
-        // String info = "";
+        Elements itemPrice = new Elements();
+
         try {
             document = Jsoup.connect(url).get();
             System.out.println("Title: " + document.title());
-
-            // priceDiv = document.getElementsByClass("pb-current-price");
-            // info = document.select("p span:contains($)"); // test
-            info = document.select("div.pb-current-price:contains($)").first();
-            //info = document.select("div.pb-current-price:contains($)").first().text();
-            System.out.println("Printing Price....");
-            // for(Element paragraph : info){
-                // System.out.println(paragraph.text());
-             System.out.println(info.text());
-            //}
+            itemPrice = document.select("span:contains($)");
+            System.out.println("Price: " + itemPrice.text());
         } catch (IOException | NullPointerException e) {
             warn("Unable to retrieve price!");
             e.printStackTrace();
         }
-        return info.text();
+        System.out.println("Price retrieved!");
+        return itemPrice.text();
     }
 
     /* Check if a url is valid */
     public boolean checkIfValid(String url){
-
         System.out.println("Checking if url valid");
         try{
             new URL(url).toURI();

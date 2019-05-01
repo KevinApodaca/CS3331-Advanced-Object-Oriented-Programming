@@ -3,39 +3,32 @@
  * @author Kevin Apodaca, Imani Martin
  * @since 4/17/19
  * In this assignment, you are to extend your HW2 program to support
-	multiple items. Focus on the design of the UI. You will learn and
-	become familar with several Swing widgets such as JDialog, JList (or
-	JTable), JMenu, JPopupMenu, JMenuBar and JToolBar. Your application
-	shall meet all the relevant requirements from HW2 as well as the
-	following new ones.
-
-	R1. Provide a way to manage the list of items whose prices are to be
-		watched over. The user should be able to add a new item, remove an
-		existing item, and change an existing item, e.g., rename the item
-		or change its URL (see R3, R4 and R5 below).
-
-	R2. Display all watched items along with their price changes. Consider
-		using a JList (or JTable) for this.
-
-	R3. Use custom dialogs (subclasses of JDialog) to add and change an
-		item in the watch list.
-
-	R4. Improve the user interface by proving a menu and a tool bar to (a)
-		add a new item and (b) to check the current prices of all
-		items. For each menu item, provide an icon, a mnemonic and an
-		accelerator. For each tool bar button, use an icon and provide a
-		tool tip.
-
-	R5. Provide a popup menu to manipulate an indiviual item. Your popup
-		menu shall include menu items for:
-
-		- Checking the current price
-		- Viewing its webpage
-		- Editing it (change the name and URL; see R1 above)
-		- Removing it (see R1 above)
-
-	R6. Use JavaDoc to document your classes. Write a Javadoc comment for
-		each class/interface, field, constructor and method.
+multiple items. Focus on the design of the UI. You will learn and
+become familar with several Swing widgets such as JDialog, JList (or
+JTable), JMenu, JPopupMenu, JMenuBar and JToolBar. Your application
+shall meet all the relevant requirements from HW2 as well as the
+following new ones.
+R1. Provide a way to manage the list of items whose prices are to be
+watched over. The user should be able to add a new item, remove an
+existing item, and change an existing item, e.g., rename the item
+or change its URL (see R3, R4 and R5 below).
+R2. Display all watched items along with their price changes. Consider
+using a JList (or JTable) for this.
+R3. Use custom dialogs (subclasses of JDialog) to add and change an
+item in the watch list.
+R4. Improve the user interface by proving a menu and a tool bar to (a)
+add a new item and (b) to check the current prices of all
+items. For each menu item, provide an icon, a mnemonic and an
+accelerator. For each tool bar button, use an icon and provide a
+tool tip.
+R5. Provide a popup menu to manipulate an indiviual item. Your popup
+menu shall include menu items for:
+- Checking the current price
+- Viewing its webpage
+- Editing it (change the name and URL; see R1 above)
+- Removing it (see R1 above)
+R6. Use JavaDoc to document your classes. Write a Javadoc comment for
+each class/interface, field, constructor and method.
  */
 package src.main.java.Pricewatcher.base;
 
@@ -67,9 +60,9 @@ import static java.awt.event.ActionEvent.*;
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 
-/**
- * New instances of the items which we will check the price of.
- */
+    /**
+     * New instances of the items which we will check the price of.
+     */
 
 
     private List<Item> items = new ArrayList<>();
@@ -92,28 +85,28 @@ public class Main extends JFrame {
         this(DEFAULT_SIZE);
     }
 
-/**
- * Here we created  new dialog box with the dimensions passed and we configure all settings needed for things to be displayed properly.
- * @param dim
- */
-private Main(Dimension dim) {
+    /**
+     * Here we created  new dialog box with the dimensions passed and we configure all settings needed for things to be displayed properly.
+     * @param dim
+     */
+    private Main(Dimension dim) {
         super("PRICE WATCHER");
 
         // this.priceFinder = new PriceFinder();
-    this.webPriceFinder = new WebPriceFinder();
-    try {
-         UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-    } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-    } catch (InstantiationException e) {
-        e.printStackTrace();
-    } catch (IllegalAccessException e) {
-        e.printStackTrace();
-    } catch (UnsupportedLookAndFeelException e) {
-        e.printStackTrace();
-    }
+        this.webPriceFinder = new WebPriceFinder();
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
 
-    setSize(dim);
+        setSize(dim);
         configureUI();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -128,9 +121,9 @@ private Main(Dimension dim) {
         MyComponentListener(int width, int height) {
             this.width = width; this.height = height;
         }
-/**
- * Here we resize our windows by getting height and width dimensinos.
- */
+        /**
+         * Here we resize our windows by getting height and width dimensinos.
+         */
         public void componentResized(ComponentEvent e) {
             Component c = e.getComponent();
             if (c.getWidth() < width || c.getHeight() < height) {
@@ -140,30 +133,28 @@ private Main(Dimension dim) {
         }
     }
 
-/**
- * Callback to be invoked when the refresh button is clicked by the user. Method will then find the current price of the watched item and display it along with a percentage price change.
- * @param event
- */
+    /**
+     * Callback to be invoked when the refresh button is clicked by the user. Method will then find the current price of the watched item and display it along with a percentage price change.
+     * @param event
+     */
     private void refreshButtonClicked(ActionEvent event) {
-        System.out.println("Refresh button clicked!");
+        System.out.println("\nRefresh button clicked!");
         for (Item item : this.items) {
-//            item.updatePrice(this.priceFinder.getNewPrice(item.getURL()));
-            item.getCurrentPrice();
-//            for (int i = 0; i < this.items.size(); i++){
-                System.out.println("Item " + item.getName() + ": Price: " + item.getCurrentPrice());
-//            }
+            String webPriceItem = webPriceFinder.getWebPrice(item.getURL());
+            System.out.println("Item " + item.getName() + ": Price: " + webPriceItem);
 
             showMessage("New Price Updated!");
         }
+        System.out.println("Refresh done!");
         super.repaint();
     }
-/**
- * Callback to be invoked when the view-page icon is clicked by the user. This will launch the user's default web browser and open the URL of the item chosen.
- * @param event
- */
+    /**
+     * Callback to be invoked when the view-page icon is clicked by the user. This will launch the user's default web browser and open the URL of the item chosen.
+     * @param event
+     */
     private void viewPageClicked(ActionEvent event) {
         Desktop desktop = Desktop.getDesktop();
-         for (Item item : this.items) {
+        for (Item item : this.items) {
 
             try {
                 desktop.browse(new URI(item.getURL()));
@@ -180,10 +171,6 @@ private Main(Dimension dim) {
 
     /* Contains test items to ensure app is working */
     private void getTestItems(List<Item> items){
-//        String url = "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022";
-//
-//
-//        items.add(new Item("LED monitor", webPriceFinder.getWebPrice(url), url, "3/4/19"));
         items.add(new Item("Wireless Charger", "11.04", "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
         items.add(new Item("Persona 5 PS4", "301.99", "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
 
@@ -255,10 +242,10 @@ private Main(Dimension dim) {
     }
 
 
-/**
- * Adding all menu options available to the user to a menu bar
- * @return the newly created menu bar
- */
+    /**
+     * Adding all menu options available to the user to a menu bar
+     * @return the newly created menu bar
+     */
 
     private JMenuBar buildMenuBar(){
         JMenuBar menuBar = new JMenuBar();
@@ -274,14 +261,14 @@ private Main(Dimension dim) {
 
         return menuBar;
     }
-/**
- * Here we create a toolbar that the user will interact with to do the following:
-    *  Add items
-    *  Remove an item
-    *  Edit the information of an item.
- * @return completed toolbar
- * @see images folder for all icons used in this method.
- */
+    /**
+     * Here we create a toolbar that the user will interact with to do the following:
+     *  Add items
+     *  Remove an item
+     *  Edit the information of an item.
+     * @return completed toolbar
+     * @see images folder for all icons used in this method.
+     */
     private JToolBar createToolBar(){
         JToolBar toolbar = new JToolBar();
         toolbar.setRollover(true);
@@ -326,11 +313,11 @@ private Main(Dimension dim) {
 
         return toolbar;
     }
-/**
- * Here we create the main menu that will be displayed.
- * @return the main menu
- * @see images folder for the about icon.
- */
+    /**
+     * Here we create the main menu that will be displayed.
+     * @return the main menu
+     * @see images folder for the about icon.
+     */
     private JMenu createMainMenu(){
         JMenu mainMenu = new JMenu("PriceWatcher");
         mainMenu.setMnemonic(KeyEvent.VK_M);
@@ -381,19 +368,19 @@ private Main(Dimension dim) {
         return mainMenu;
 
     }
-/**
- * This will create the Edit menu. Users will be able to see and select the options to:
-    * Check the price of the item
-    * Add a new item that the user wants to track the price of.
-    * Remove an item from the list that will no longer be tracked.
-    * Edit the information of an item that is currently being tracked.
- * @return a menu that allows user to edit
- * @see images folder for all the icons that we use
- */
+    /**
+     * This will create the Edit menu. Users will be able to see and select the options to:
+     * Check the price of the item
+     * Add a new item that the user wants to track the price of.
+     * Remove an item from the list that will no longer be tracked.
+     * Edit the information of an item that is currently being tracked.
+     * @return a menu that allows user to edit
+     * @see images folder for all the icons that we use
+     */
     private JMenu createEditMenu(){
         CopyCutPaste convenience = new CopyCutPaste();
         JMenuItem checkPrices, addItem, removeItem, editItem, clearItem ;
-        JMenu editMenu = convenience.getMenu(); // new JMenu("Edit");
+        JMenu editMenu = convenience.getMenu();
 
         checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_K);
         checkPrices.setMnemonic(KeyEvent.VK_K);
@@ -451,7 +438,7 @@ private Main(Dimension dim) {
      * @see images folder for all the icons that we use
      */
     private JMenu createSortMenu(){
-        JMenuItem skipToFirstItem, skipToLastItem, sortItem;
+        JMenuItem skipToFirstItem, skipToLastItem;
         JMenu sortMenu = new JMenu("Sort");
 
         /* Go to first item in list */
@@ -479,12 +466,12 @@ private Main(Dimension dim) {
         return sortMenu;
     }
 
-/*
- * Creating a button that will later be used to reflect the updated price of an item.
- * @return button to check price update.
- * @see images folder for check icon
- *
- */
+    /*
+     * Creating a button that will later be used to reflect the updated price of an item.
+     * @return button to check price update.
+     * @see images folder for check icon
+     *
+     */
 
     private JButton createPriceUpdateButton() {
         ImageIcon icon = rescaleImage(createImageIcon("check.png"));
@@ -496,11 +483,11 @@ private Main(Dimension dim) {
 
         return button;
     }
-/**
- * Creating a button that will later be used to open a browser and see the item through its URL.
- * @return button to view the item in the browser.
- * @see images folder for open link icon.
- */
+    /**
+     * Creating a button that will later be used to open a browser and see the item through its URL.
+     * @return button to view the item in the browser.
+     * @see images folder for open link icon.
+     */
     private JButton createViewPageButton() {
         ImageIcon icon = rescaleImage(createImageIcon("openLink.png"));
 
@@ -512,12 +499,12 @@ private Main(Dimension dim) {
         return button;
     }
 
-/**
- * Here we simply resize the icons to look better in the JPanel.
- * @param icon
- * @return updated and resized icon.
- * @see images folder for icons and their original sizes.
- */
+    /**
+     * Here we simply resize the icons to look better in the JPanel.
+     * @param icon
+     * @return updated and resized icon.
+     * @see images folder for icons and their original sizes.
+     */
     private static ImageIcon rescaleImage(ImageIcon icon){
 
         Image rescaledImage = null;
@@ -530,13 +517,13 @@ private Main(Dimension dim) {
         return icon;
     }
 
-/**
- * Here we load our images onto the JPanel. When another method needs to load an image, this function will search for the image's name and load it onto the panel. Otherwise it will
- * return an error because the file name was not in the images folder.
- * @param filename
- * @return
- * @see images folder located in PriceWatcher/images/
- */
+    /**
+     * Here we load our images onto the JPanel. When another method needs to load an image, this function will search for the image's name and load it onto the panel. Otherwise it will
+     * return an error because the file name was not in the images folder.
+     * @param filename
+     * @return
+     * @see images folder located in PriceWatcher/images/
+     */
     /* Create icon */
     private ImageIcon createImageIcon(String filename) {
         URL imageUrl = getClass().getResource("/src/main/java/Pricewatcher/images/" + filename);
@@ -547,10 +534,10 @@ private Main(Dimension dim) {
             return null;
         }
     }
-/**
- * This will load a quick message with the text that the user selected. This will last a total of 3 seconds.
- * @param msg
- */
+    /**
+     * This will load a quick message with the text that the user selected. This will last a total of 3 seconds.
+     * @param msg
+     */
     private void showMessage(String msg) {
         msgBar.setText(msg);
         new Thread(() -> {
@@ -582,9 +569,9 @@ private Main(Dimension dim) {
 
 
     /*
-    *  When add button is clicked, a new window is opened to enter new item information
-    * @param event
-    * */
+     *  When add button is clicked, a new window is opened to enter new item information
+     * @param event
+     * */
     private class AddItemPopUp implements ActionListener, PropertyChangeListener {
         @Override
         public void actionPerformed(ActionEvent event){
@@ -616,8 +603,8 @@ private Main(Dimension dim) {
             urlField.setColumns(5);
             urlField.addPropertyChangeListener("value", this);
 
-            priceField = new JFormattedTextField(NumberFormat.getCurrencyInstance());
-            priceField.setValue(0.00);
+            priceField = new JFormattedTextField();
+            priceField.setValue("0.00");
             priceField.setColumns(5);
             priceField.addPropertyChangeListener("value", this);
 
@@ -669,9 +656,10 @@ private Main(Dimension dim) {
 
                 // check if url entered is valid
                 if(webPriceFinder.checkIfValid(url)){
+                    String webPriceItem = webPriceFinder.getWebPrice(url);
                     // insert item at the end of the list
-                    model.addElement(new Item(name, webPriceFinder.getWebPrice(url), url, date.toString()));
-                    items.add(new Item(name, webPriceFinder.getWebPrice(url), url, date.toString()));
+                    model.addElement(new Item(name, webPriceItem, url, date.toString()));
+                    items.add(new Item(name, webPriceItem, url, date.toString()));
                 }
 
                 // select the new item and make it visible
@@ -689,8 +677,7 @@ private Main(Dimension dim) {
             } else if (source == urlField) {
                 url = ((String)urlField.getValue());
             } else if (source == priceField) {
-                // price = ((Number)priceField.getValue()).doubleValue();
-                price = (String) webPriceFinder.getWebPrice(url);
+                price = webPriceFinder.getWebPrice(url);
             }else if (source == dateField) {
                 Date date = ((Date) dateField.getValue());
             }
@@ -715,10 +702,10 @@ private Main(Dimension dim) {
     private class lastItemOfList implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-             int lastIndex = itemList.getModel().getSize()-1;
-             if(lastIndex >= 0) {
-                 itemList.setSelectedIndex(lastIndex);
-                 itemList.ensureIndexIsVisible(lastIndex);
+            int lastIndex = itemList.getModel().getSize()-1;
+            if(lastIndex >= 0) {
+                itemList.setSelectedIndex(lastIndex);
+                itemList.ensureIndexIsVisible(lastIndex);
             }
 
         }
