@@ -39,6 +39,7 @@
  */
 package src.main.java.Pricewatcher.base;
 
+import src.main.java.Pricewatcher.console.CopyCutPaste;
 import src.main.java.Pricewatcher.model.Item;
 // import src.main.java.Pricewatcher.model.PriceFinder;
 import src.main.java.Pricewatcher.model.WebPriceFinder;
@@ -53,7 +54,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -93,7 +93,7 @@ public class Main extends JFrame {
     }
 
 /**
- * Here we createa  new dialog box with the dimensions passed and we configure all settings needed for things to be displayed properly.
+ * Here we created  new dialog box with the dimensions passed and we configure all settings needed for things to be displayed properly.
  * @param dim
  */
 private Main(Dimension dim) {
@@ -180,7 +180,10 @@ private Main(Dimension dim) {
 
     /* Contains test items to ensure app is working */
     private void getTestItems(List<Item> items){
-        items.add(new Item("LED monitor", "61.13", "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022", "3/4/19"));
+//        String url = "https://www.bestbuy.com/site/samsung-ue590-series-28-led-4k-uhd-monitor-black/5484022.p?skuId=5484022";
+//
+//
+//        items.add(new Item("LED monitor", webPriceFinder.getWebPrice(url), url, "3/4/19"));
         items.add(new Item("Wireless Charger", "11.04", "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
         items.add(new Item("Persona 5 PS4", "301.99", "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
 
@@ -388,12 +391,13 @@ private Main(Dimension dim) {
  * @see images folder for all the icons that we use
  */
     private JMenu createEditMenu(){
-        JMenuItem checkPrices, addItem, removeItem, editItem, clearItem;
-        JMenu editMenu = new JMenu("Edit");
+        CopyCutPaste convenience = new CopyCutPaste();
+        JMenuItem checkPrices, addItem, removeItem, editItem, clearItem ;
+        JMenu editMenu = convenience.getMenu(); // new JMenu("Edit");
 
-        checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_C);
-        checkPrices.setMnemonic(KeyEvent.VK_C);
-        checkPrices.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ALT_MASK));
+        checkPrices = new JMenuItem("Check Prices", KeyEvent.VK_K);
+        checkPrices.setMnemonic(KeyEvent.VK_K);
+        checkPrices.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, ALT_MASK));
         checkPrices.setIcon(rescaleImage(createImageIcon("check.png")));
         checkPrices.addActionListener(this::refreshButtonClicked);
         checkPrices.setToolTipText("Check for updated prices");
@@ -426,6 +430,7 @@ private Main(Dimension dim) {
         clearItem.setIcon(rescaleImage(createImageIcon("clear.png")));
         clearItem.setToolTipText("Remove all items");
         clearItem.addActionListener(new clearAllItems());
+
 
         /** Calling all methods that will allow buttons to perform their respective actions when clicked. */
         editMenu.add(checkPrices);
@@ -641,6 +646,13 @@ private Main(Dimension dim) {
             fieldPane.add(new JLabel(("Date: ")));
             fieldPane.add(dateField);
 
+            /* Copy And Paste Functions */
+            CopyCutPaste convenience = new CopyCutPaste();
+            convenience.setPopup(fieldPane, nameField);
+            convenience.setPopup(fieldPane, urlField);
+            convenience.setPopup(fieldPane, priceField);
+
+            /* Confirmation Box */
             int option = JOptionPane.showConfirmDialog(addItemWindow, fieldPane, "Add New Item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
             if (option == JOptionPane.OK_OPTION){

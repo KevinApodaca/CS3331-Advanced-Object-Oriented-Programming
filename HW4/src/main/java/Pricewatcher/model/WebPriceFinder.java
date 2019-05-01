@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
 
 
 public class WebPriceFinder extends PriceFinder{
@@ -18,27 +19,32 @@ public class WebPriceFinder extends PriceFinder{
 
     }
 
+    /* Finds the price of the item */
     public String getWebPrice(String url){
         System.out.println("Running...");
         System.out.println("url: " + url);
         Document document;
-        Elements info = new Elements();
-        // Elements price = new Elements();
-        // if(checkIfValid(url)){
-            try {
-                document = Jsoup.connect(url).get();
-                System.out.println("Title: " + document.title());
-                info = document.select("p span:contains($)");
-                System.out.println("Printing Price....");
-                for(Element paragraph : info){
-                    System.out.println(paragraph.text());
-                }
-            } catch (IOException | NullPointerException e) {
-                System.out.println("Unable to get price");
-                e.printStackTrace();
-            }
-            System.out.println("Price Extracted!");
-            return info.text();
+        // Elements priceDiv = new Elements();
+         Element info = null;
+        // String info = "";
+        try {
+            document = Jsoup.connect(url).get();
+            System.out.println("Title: " + document.title());
+
+            // priceDiv = document.getElementsByClass("pb-current-price");
+            // info = document.select("p span:contains($)"); // test
+            info = document.select("div.pb-current-price:contains($)").first();
+            //info = document.select("div.pb-current-price:contains($)").first().text();
+            System.out.println("Printing Price....");
+            // for(Element paragraph : info){
+                // System.out.println(paragraph.text());
+             System.out.println(info.text());
+            //}
+        } catch (IOException | NullPointerException e) {
+            warn("Unable to retrieve price!");
+            e.printStackTrace();
+        }
+        return info.text();
     }
 
     /* Check if a url is valid */
