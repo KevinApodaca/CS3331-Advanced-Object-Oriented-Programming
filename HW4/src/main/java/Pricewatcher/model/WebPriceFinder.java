@@ -5,12 +5,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-
 
 public class WebPriceFinder extends PriceFinder{
 
@@ -41,12 +38,15 @@ public class WebPriceFinder extends PriceFinder{
             System.out.println("Host: " + urlHost);
 
             /* Price is parsed depending on host of site */
-            if(urlHost.equals("www.amazon.com")){
+            if(urlHost.equals("www.amazon.com")) {
                 itemPrice = document.select("span.p13n-sc-price:contains($)");
-                System.out.println("itemPrice: " + itemPrice.text());
                 priceExtracted = parseURL(itemPrice);
-
-            }else{
+            }else if(urlHost.equals("www.bestbuy.com")){
+                itemPrice = document.select("span[aria-hidden]:contains($)");
+            }else if(urlHost.equals("www.ebay.com")){
+                itemPrice = document.select("span.mfe-pull-left mfe-strikethrough:contains($)");
+            }
+            else{
                 itemPrice = document.select("span:contains($)");
                 priceExtracted = itemPrice.text();
             }
@@ -54,15 +54,15 @@ public class WebPriceFinder extends PriceFinder{
             System.out.println("Web Price: " + priceExtracted);
         } catch (IOException | NullPointerException e) {
             warn("Unable to retrieve price!");
-            e.printStackTrace();
+            System.out.println("Price Unavailable!");
+            priceExtracted = "Unavailable";
         }
-        System.out.println("Price retrieved!");
+        System.out.println("Search Complete!");
         return priceExtracted;
     }
 
     /* Check if a url is valid */
     public boolean checkIfValid(String url){
-        System.out.println("Checking if url valid");
         try{
             new URL(url).toURI();
             return true;

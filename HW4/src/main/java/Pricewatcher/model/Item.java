@@ -32,6 +32,21 @@ each class/interface, field, constructor and method.
  */
 package src.main.java.Pricewatcher.model;
 
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import src.main.java.Pricewatcher.base.FileItemManager;
+
+import javax.swing.text.html.HTMLDocument;
+import java.io.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.jar.JarOutputStream;
+
 public class Item {
 
 	private String name;
@@ -50,9 +65,85 @@ public class Item {
 		this.currentPrice = price;
 		this.originalPrice = price;
 		this.url = url;
-		this.priceChange =  "0.0";
+		this.priceChange = "0.0";
 		this.dateAdded = dateAdded;
 	}
+
+	public JSONObject toJson(){
+		JSONObject obj;
+		Map<String, Object> map = new HashMap<>();
+		map.put("name", name);
+		map.put("price", currentPrice);
+		map.put("url", url);
+		map.put("date", dateAdded);
+
+		obj = new JSONObject(map);
+
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.add("saved items");
+
+		obj.put("pricewatcher", jsonArray);
+
+		FileItemManager.createJsonFile(obj);
+		return obj;
+	}
+
+	public static Item fromJson(JSONObject obj) throws IOException {
+		JSONParser parser = new JSONParser();
+		String name = "", price = "", url = "", date = "";
+
+		try{
+			// convert json string to JSONObject
+			Object newObj = parser.parse(new FileReader("/src/main/java/Pricewatcher/saved_items.json"));
+
+			// display values using keys
+			obj = (JSONObject)newObj;
+			System.out.println(obj);
+
+			name = (String) obj.get("name");
+			System.out.println(name);
+
+			price = (String) obj.get("price");
+			System.out.println(price);
+
+			url = (String) obj.get("url");
+			System.out.println(url);
+
+			date = (String) obj.get("date");
+			System.out.println(date);
+
+			JSONArray jsonArray = (JSONArray)obj.get("pricewatcher");
+
+			Iterator<String> iterator = jsonArray.iterator();
+			while (iterator.hasNext()){
+				System.out.println(iterator.next());
+			}
+
+		}catch (FileNotFoundException e){
+			e.printStackTrace();
+		}catch (IOException e){
+			e.printStackTrace();
+		}catch (ParseException e){
+			e.printStackTrace();
+		}
+
+		Item item = new Item(name, price, url, date);
+//		// ...
+		return item;
+	}
+
+	public static Object readJsonFile() throws IOException, ParseException {
+		FileReader reader = null;
+		JSONParser parser = null;
+		try {
+			reader = new FileReader("src.main.java.Pricewatcher/itemWatcher.json");
+			parser = new JSONParser();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return parser.parse(reader);
+	}
+
 /**
  * Here we do our setters and getters of different methods for the item class.
  *

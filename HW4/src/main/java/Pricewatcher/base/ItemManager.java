@@ -47,9 +47,9 @@ import java.util.List;
 /** A special panel to display the detail of an item. */
 
 @SuppressWarnings("serial")
-class ItemView extends JPanel {
+class ItemManager extends JPanel {
 
-    DecimalFormat df = new DecimalFormat("##.##");
+    private DecimalFormat df = new DecimalFormat("##.##");
     private List<Item> itemList;
 
     /**
@@ -77,7 +77,7 @@ class ItemView extends JPanel {
      * Creates new instance of the itemView
      * @param itemList
      */
-    public ItemView(List<Item> itemList) {
+    public ItemManager(List<Item> itemList) {
         setBackground(Color.WHITE);
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {

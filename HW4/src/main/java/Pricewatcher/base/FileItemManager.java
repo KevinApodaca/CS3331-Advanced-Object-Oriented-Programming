@@ -1,16 +1,13 @@
 package src.main.java.Pricewatcher.base;
 
-import netscape.javascript.JSObject;
-import org.json.JSONObject;
-
+import org.json.simple.JSONObject;
 import src.main.java.Pricewatcher.model.Item;
 
-import java.util.Date;
-import java.util.HashMap;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
-public class FileItemManager extends ItemView{
+public class FileItemManager extends ItemManager {
     /**
      * Creates new instance of the itemView
      *
@@ -20,22 +17,20 @@ public class FileItemManager extends ItemView{
         super(itemList);
     }
 
-//    public JSONObject toJson(){
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("name", name);
-//        map.put("currentPrice", currentPrice);
-//        map.put("url", url);
-//        map.put("date", date);
-//        return new JSONObject(map);
-//    }
-//
-//    public static Item fromJson(JSObject obj){
-//        String name = obj.getString("name");
-//        float currentPrice = (float) obj.getDouble("currentPrice");
-//        String url = obj.getString("url");
-//        Date date = (String) obj.getString("date");
-//        Item item = new Item(name, currentPrice, url, date.toString());
-//        // ...
-//        return item;
-//    }
+    public static void createJsonFile(JSONObject obj){
+        try (FileWriter file = new FileWriter("/src/main/java/Pricewatcher/saved_items.json")) {
+            //File Writer creates a file in write mode at the given location
+            file.write(obj.toJSONString());
+
+            //write function is use to write in file,
+            //here we write the Json object in the file
+            file.flush();
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(obj);
+    }
 }

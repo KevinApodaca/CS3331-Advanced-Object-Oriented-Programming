@@ -141,7 +141,6 @@ public class Main extends JFrame {
         System.out.println("\nRefresh button clicked!");
         for (Item item : this.items) {
             String webPriceItem = webPriceFinder.getWebPrice(item.getURL());
-            System.out.println("Item " + item.getName() + ": Price: " + webPriceItem);
 
             showMessage("New Price Updated!");
         }
@@ -171,8 +170,14 @@ public class Main extends JFrame {
 
     /* Contains test items to ensure app is working */
     private void getTestItems(List<Item> items){
-        items.add(new Item("Wireless Charger", "11.04", "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop", "4/15/19"));
-        items.add(new Item("Persona 5 PS4", "301.99", "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1", "4/16/2019"));
+
+        /* Test urls added to make sure web_price_finder is extracting prices */
+        String testURL = "https://www.amazon.com/dp/B07DBX67NC/ref=br_msw_pdt-1?_encoding=UTF8&smid=A294P4X9EWVXLJ&pf_rd_m=ATVPDKIKX0DER&pf_rd_s=&pf_rd_r=R830R3XMQCGASSTMNCAC&pf_rd_t=36701&pf_rd_p=19eb5a6f-0aea-4094-a094-545fd76f6e8d&pf_rd_i=desktop";
+
+        String testURL2 = "https://www.amazon.com/Persona-PlayStation-Take-Your-Heart-Premium/dp/B01GKHJPAC/ref=sr_1_5?keywords=persona%2B5&qid=1555473381&s=gateway&sr=8-5&th=1";
+
+        items.add(new Item("Wireless Charger", webPriceFinder.getWebPrice(testURL), testURL, "4/15/19"));
+        items.add(new Item("Persona 5 PS4", webPriceFinder.getWebPrice(testURL2), testURL2, "4/16/2019"));
 
     }
 
@@ -604,8 +609,9 @@ public class Main extends JFrame {
             urlField.addPropertyChangeListener("value", this);
 
             priceField = new JFormattedTextField();
-            priceField.setValue("0.00");
+            priceField.setValue("$0.00");
             priceField.setColumns(5);
+            priceField.setEditable(false);
             priceField.addPropertyChangeListener("value", this);
 
             dateField = new JFormattedTextField();
@@ -637,7 +643,6 @@ public class Main extends JFrame {
             CopyCutPaste convenience = new CopyCutPaste();
             convenience.setPopup(fieldPane, nameField);
             convenience.setPopup(fieldPane, urlField);
-            convenience.setPopup(fieldPane, priceField);
 
             /* Confirmation Box */
             int option = JOptionPane.showConfirmDialog(addItemWindow, fieldPane, "Add New Item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -728,6 +733,7 @@ public class Main extends JFrame {
 
             /* Creating new window for editing selected item */
             panel.setLayout(new GridLayout(0,2,4,2));
+            CopyCutPaste convenience = new CopyCutPaste();
 
             JTextField newNameField = new JTextField(5);
             JTextField newUrlField = new JTextField(5);
@@ -737,6 +743,9 @@ public class Main extends JFrame {
 
             panel.add(new JLabel("Please enter a new URL: "));
             panel.add(newUrlField);
+
+            convenience.setPopup(panel, newNameField);
+            convenience.setPopup(panel, newUrlField);
 
             int option = JOptionPane.showConfirmDialog(editItemWindow, panel, "Edit Item", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
