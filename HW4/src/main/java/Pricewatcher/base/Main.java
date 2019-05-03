@@ -34,7 +34,6 @@ package src.main.java.Pricewatcher.base;
 
 import src.main.java.Pricewatcher.console.CopyCutPaste;
 import src.main.java.Pricewatcher.model.Item;
-// import src.main.java.Pricewatcher.model.PriceFinder;
 import src.main.java.Pricewatcher.model.WebPriceFinder;
 
 import java.awt.*;
@@ -140,7 +139,7 @@ public class Main extends JFrame {
     private void refreshButtonClicked(ActionEvent event) {
         System.out.println("\nRefresh button clicked!");
         for (Item item : this.items) {
-            String webPriceItem = webPriceFinder.getWebPrice(item.getURL());
+            webPriceFinder.getWebPrice(item.getURL());
 
             showMessage("New Price Updated!");
         }
@@ -338,7 +337,7 @@ public class Main extends JFrame {
                 JPanel infoPanel = new JPanel();
 
                 JLabel title = new JLabel("PriceWatcher App\t");
-                JLabel authors = new JLabel("Copyright 2019 Imani Martin & Kevin Apodaca");
+                JLabel authors = new JLabel("Copyright 2019 Kevin Apodaca & Imani Martin");
 
                 infoPanel.add(title);
                 infoPanel.add(authors);

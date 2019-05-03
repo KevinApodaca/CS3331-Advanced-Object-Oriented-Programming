@@ -39,13 +39,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import src.main.java.Pricewatcher.base.FileItemManager;
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.*;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.jar.JarOutputStream;
 
 public class Item {
 
@@ -67,22 +64,28 @@ public class Item {
 		this.url = url;
 		this.priceChange = "0.0";
 		this.dateAdded = dateAdded;
+
+		JSONObject obj = toJson();
+
 	}
 
 	public JSONObject toJson(){
-		JSONObject obj;
+		System.out.println("\nTO_JSON");
+		// JSONObject outer = new JSONObject();
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("name", name);
 		map.put("price", currentPrice);
 		map.put("url", url);
 		map.put("date", dateAdded);
 
-		obj = new JSONObject(map);
+		JSONObject obj = new JSONObject(map);
+		// outer.put("item", obj);
+		//outer.toString();
 
-		JSONArray jsonArray = new JSONArray();
-		jsonArray.add("saved items");
-
-		obj.put("pricewatcher", jsonArray);
+		JSONArray list = new JSONArray();
+		// list.add(obj);
+		obj.put("item list", list);
 
 		FileItemManager.createJsonFile(obj);
 		return obj;
@@ -91,13 +94,14 @@ public class Item {
 	public static Item fromJson(JSONObject obj) throws IOException {
 		JSONParser parser = new JSONParser();
 		String name = "", price = "", url = "", date = "";
+		System.out.println("\nFROM_JSON");
 
 		try{
-			// convert json string to JSONObject
-			Object newObj = parser.parse(new FileReader("/src/main/java/Pricewatcher/saved_items.json"));
+			// convert json string to JSONObjectr
+			obj = (JSONObject) parser.parse(new FileReader("src/main/java/Pricewatcher/saved_items.json"));
 
 			// display values using keys
-			obj = (JSONObject)newObj;
+			// obj = (JSONObject)obj;
 			System.out.println(obj);
 
 			name = (String) obj.get("name");
@@ -112,9 +116,9 @@ public class Item {
 			date = (String) obj.get("date");
 			System.out.println(date);
 
-			JSONArray jsonArray = (JSONArray)obj.get("pricewatcher");
+			JSONArray arr = (JSONArray)obj.get("item");
 
-			Iterator<String> iterator = jsonArray.iterator();
+			Iterator<String> iterator = arr.iterator();
 			while (iterator.hasNext()){
 				System.out.println(iterator.next());
 			}

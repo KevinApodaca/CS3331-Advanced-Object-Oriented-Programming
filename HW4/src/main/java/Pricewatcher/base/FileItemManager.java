@@ -18,9 +18,11 @@ public class FileItemManager extends ItemManager {
     }
 
     public static void createJsonFile(JSONObject obj){
-        try (FileWriter file = new FileWriter("/src/main/java/Pricewatcher/saved_items.json")) {
+        System.out.println("\nCREATE FILE");
+        try (FileWriter file = new FileWriter("src/main/java/Pricewatcher/saved_items.json")) {
             //File Writer creates a file in write mode at the given location
             file.write(obj.toJSONString());
+            file.write("\n");
 
             //write function is use to write in file,
             //here we write the Json object in the file
