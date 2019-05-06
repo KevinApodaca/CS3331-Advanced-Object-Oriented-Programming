@@ -54,7 +54,6 @@ public class PriceFinder {
  */	
 	public double getNewPrice (String url) {
 		return roundPrice(25.0 + Math.random() * (100.0 - 25.0));
-
 	}
 /**
  * Rounding our price to two decimal places, instead of multiple decimals like the previous version of this software.
@@ -66,5 +65,4 @@ public class PriceFinder {
 		bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
 		return bd.doubleValue();
 	}
-	
 }
