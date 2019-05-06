@@ -78,7 +78,6 @@ public class UI {
 			System.out.println("URL: " + item.getURL());
 			System.out.println("Price: " + item.getCurrentPrice());
 			System.out.println("Change: " + item.getPriceChange() + "%");
-
 			System.out.println("Date Added: " + item.getDateAdded() + "($" + String.format("%.2f", item.getCurrentPrice()) + ")");
 		}
 	}
