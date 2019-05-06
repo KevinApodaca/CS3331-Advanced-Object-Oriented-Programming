@@ -74,7 +74,6 @@ public class Item {
  */
 	public JSONObject toJson(){
 		System.out.println("\nTO_JSON");
-		// JSONObject outer = new JSONObject();
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("name", name);
@@ -83,11 +82,9 @@ public class Item {
 		map.put("date", dateAdded);
 
 		JSONObject obj = new JSONObject(map);
-		// outer.put("item", obj);
-		//outer.toString();
 
 		JSONArray list = new JSONArray();
-		// list.add(obj);
+
 		obj.put("item list", list);
 
 		FileItemManager.createJsonFile(obj);
@@ -140,7 +137,6 @@ public class Item {
 		}
 
 		Item item = new Item(name, price, url, date);
-//		// ...
 		return item;
 	}
 /**
