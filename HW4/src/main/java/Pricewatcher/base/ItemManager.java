@@ -75,7 +75,7 @@ class ItemManager extends JPanel {
 
     /**
      * Creates new instance of the itemView
-     * @param itemList
+     * @param itemList - the list of items.
      */
     public ItemManager(List<Item> itemList) {
         setBackground(Color.WHITE);
@@ -125,9 +125,9 @@ class ItemManager extends JPanel {
 
     /**
      * This method will return true if the screen coordinates (x,y) are inside of the viewPage icon. False otherwise.
-     * @param x
-     * @param y
-     * @return
+     * @param x - the x position
+     * @param y - the y position
+     * @return new Rectangle object.
      */
     private boolean isViewPageClicked(int x, int y) {
         return new Rectangle(20, 30, 30, 20).contains(x, y);

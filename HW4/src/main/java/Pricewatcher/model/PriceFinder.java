@@ -49,7 +49,7 @@ public class PriceFinder {
 	}
 /**
  * Randomly generating a new price for our item.
- * @param url
+ * @param url - the URL of the item.
  * @return a new price.
  */	
 	public double getNewPrice (String url) {
@@ -58,7 +58,7 @@ public class PriceFinder {
 	}
 /**
  * Rounding our price to two decimal places, instead of multiple decimals like the previous version of this software.
- * @param price
+ * @param price - the price of the item.
  * @return rounded price.
  */
 	public double roundPrice (double price){

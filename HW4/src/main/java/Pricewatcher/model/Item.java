@@ -52,10 +52,10 @@ public class Item {
 
 	/**
 	 * Here we initialize our item with the following parameters.
-	 * @param name
-	 * @param price
-	 * @param url
-	 * @param dateAdded
+	 * @param name - the name of the item.
+	 * @param price - the price of the item.
+	 * @param url - the url of the item.
+	 * @param dateAdded - the date the item was added.
 	 */
 	public Item(String name, String price, String url, String dateAdded) {
 		this.name = name;
@@ -68,7 +68,10 @@ public class Item {
 		JSONObject obj = toJson();
 
 	}
-
+/**
+ * Method will conver item data to JSON.
+ * @return the new object.
+ */
 	public JSONObject toJson(){
 		System.out.println("\nTO_JSON");
 		// JSONObject outer = new JSONObject();
@@ -90,7 +93,12 @@ public class Item {
 		FileItemManager.createJsonFile(obj);
 		return obj;
 	}
-
+/**
+ * Method will read data from JSON
+ * @param obj - the object 
+ * @return the new item.
+ * @throws IOException
+ */
 	public static Item fromJson(JSONObject obj) throws IOException {
 		JSONParser parser = new JSONParser();
 		String name = "", price = "", url = "", date = "";
@@ -135,7 +143,12 @@ public class Item {
 //		// ...
 		return item;
 	}
-
+/**
+ * Method will read JSON file and parse for information.
+ * @return the list
+ * @throws IOException
+ * @throws ParseException
+ */
 	public static Object readJsonFile() throws IOException, ParseException {
 		FileReader reader = null;
 		JSONParser parser = null;
@@ -200,42 +213,42 @@ public class Item {
 	}
 	/**
 	 * Method will take in an original price for an item and set it as the price for the item.
-	 * @param originalPrice
+	 * @param originalPrice - the original price of the item.
 	 */
 	public void setOriginalPrice(String originalPrice) {
 		this.originalPrice = originalPrice;
 	}
 	/**
 	 * Method will take in a price of the item and set it as the current price of that item.
-	 * @param currentPrice
+	 * @param currentPrice - the current price of the item.
 	 */
 	public void setCurrentPrice(String currentPrice) {
 		this.currentPrice = currentPrice;
 	}
 	/**
 	 * Method will take in a price for an item and set it as the change of price for it.
-	 * @param priceChange
+	 * @param priceChange - the change in the price.
 	 */
 	public void setPriceChange(String priceChange) {
 		this.priceChange = priceChange;
 	}
 	/**
 	 * Method takes in a string URL and sets it as the URL of the item.
-	 * @param url
+	 * @param url - the URL of the item.
 	 */
 	public void setURL(String url) {
 		this.url = url;
 	}
 	/**
 	 * Method will take in a string name of the item and set it as the name of the item.
-	 * @param name
+	 * @param name - the name of the item.
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	/**
 	 * Method will take in a string of the date the item was added and set it as the item's date that it was added to the app.
-	 * @param dateAdded
+	 * @param dateAdded - the date the item was added.
 	 */
 	public void setDateAdded(String dateAdded) {
 		this.dateAdded = dateAdded;

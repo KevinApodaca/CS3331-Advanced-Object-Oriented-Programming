@@ -67,7 +67,10 @@ public class UI {
 		testItemList.add(testItem);
 		return testItemList;
 	}
-	
+	/**
+	 * Method will be used to display items to console.
+	 * @param itemList - the list of items.
+	 */
 	public static void displayItems(List<Item> itemList) {
 		/* Displays the item information of each item on the terminal.*/
 		for (Item item: itemList) {
@@ -79,7 +82,11 @@ public class UI {
 			System.out.println("Date Added: " + item.getDateAdded() + "($" + String.format("%.2f", item.getCurrentPrice()) + ")");
 		}
 	}
-	
+	/**
+	 * Method will be used to find the choice the user wants. 
+	 * @param reader - the scanner
+	 * @return the choice.
+	 */
 	public static int getUserChoice(Scanner reader) {
 		/* Reads user input to determine next price watcher action.*/
 		int userChoice = 0;
@@ -93,7 +100,10 @@ public class UI {
 		}
 		return userChoice;
 	}
-	
+	/**
+	 * Method will launch the website to the default web browser.
+	 * @param item - the item clicked on.
+	 */
 	public static void launchWebsite(Item item) {
 		/* Launches item web sites in user's default browser*/
 		if (Desktop.isDesktopSupported()) {

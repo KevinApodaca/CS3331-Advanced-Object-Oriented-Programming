@@ -11,7 +11,7 @@ public class FileItemManager extends ItemManager {
     /**
      * Creates new instance of the itemView
      *
-     * @param itemList
+     * @param itemList - the list of items.
      */
     public FileItemManager(List<Item> itemList) {
         super(itemList);

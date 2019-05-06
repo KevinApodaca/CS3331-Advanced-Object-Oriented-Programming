@@ -86,7 +86,7 @@ public class Main extends JFrame {
 
     /**
      * Here we created  new dialog box with the dimensions passed and we configure all settings needed for things to be displayed properly.
-     * @param dim
+     * @param dim - the dimension of the window.
      */
     private Main(Dimension dim) {
         super("PRICE WATCHER");
@@ -134,7 +134,7 @@ public class Main extends JFrame {
 
     /**
      * Callback to be invoked when the refresh button is clicked by the user. Method will then find the current price of the watched item and display it along with a percentage price change.
-     * @param event
+     * @param event - the button being clicked.
      */
     private void refreshButtonClicked(ActionEvent event) {
         System.out.println("\nRefresh button clicked!");
@@ -148,7 +148,7 @@ public class Main extends JFrame {
     }
     /**
      * Callback to be invoked when the view-page icon is clicked by the user. This will launch the user's default web browser and open the URL of the item chosen.
-     * @param event
+     * @param event - the button being clicked.
      */
     private void viewPageClicked(ActionEvent event) {
         Desktop desktop = Desktop.getDesktop();
@@ -470,13 +470,12 @@ public class Main extends JFrame {
         return sortMenu;
     }
 
-    /*
+    /** 
      * Creating a button that will later be used to reflect the updated price of an item.
      * @return button to check price update.
      * @see images folder for check icon
      *
      */
-
     private JButton createPriceUpdateButton() {
         ImageIcon icon = rescaleImage(createImageIcon("check.png"));
 
@@ -505,7 +504,7 @@ public class Main extends JFrame {
 
     /**
      * Here we simply resize the icons to look better in the JPanel.
-     * @param icon
+     * @param icon - the picture that needs to be rescaled.
      * @return updated and resized icon.
      * @see images folder for icons and their original sizes.
      */
@@ -524,7 +523,7 @@ public class Main extends JFrame {
     /**
      * Here we load our images onto the JPanel. When another method needs to load an image, this function will search for the image's name and load it onto the panel. Otherwise it will
      * return an error because the file name was not in the images folder.
-     * @param filename
+     * @param filename - the name of the folder that holds images.
      * @return
      * @see images folder located in PriceWatcher/images/
      */
@@ -540,7 +539,7 @@ public class Main extends JFrame {
     }
     /**
      * This will load a quick message with the text that the user selected. This will last a total of 3 seconds.
-     * @param msg
+     * @param msg - the message we want to display.
      */
     private void showMessage(String msg) {
         msgBar.setText(msg);
@@ -572,9 +571,9 @@ public class Main extends JFrame {
     private String price = "0.00";
 
 
-    /*
+    /**
      *  When add button is clicked, a new window is opened to enter new item information
-     * @param event
+     * @param event - the button that needs to be clicked.
      * */
     private class AddItemPopUp implements ActionListener, PropertyChangeListener {
         @Override
@@ -834,7 +833,7 @@ public class Main extends JFrame {
 
     /**
      * Calling our main method.
-     * @param args
+     * @param args - the arguments passed to call a new method.
      */
     public static void main(String[] args) {
         new Main();
