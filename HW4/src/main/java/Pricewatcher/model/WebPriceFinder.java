@@ -2,40 +2,30 @@
  * CS 3331 Advanced Object Oriented Programming
  * @author Kevin Apodaca, Imani Martin
  * @since 4/4/19
- * In this assignment, you are to extend your HW2 program to support
-	multiple items. Focus on the design of the UI. You will learn and
-	become familar with several Swing widgets such as JDialog, JList (or
-	JTable), JMenu, JPopupMenu, JMenuBar and JToolBar. Your application
-	shall meet all the relevant requirements from HW2 as well as the
+ * In this assignment, you are to extend your HW3 code and create the
+	ultimate version of the Price Watcher application that supports
+	network and data persistence. Your app shall meet all the relevant
+	requirements from the previous homework assignments as well as the
 	following new ones.
 
-	R1. Provide a way to manage the list of items whose prices are to be
-		watched over. The user should be able to add a new item, remove an
-		existing item, and change an existing item, e.g., rename the item
-		or change its URL (see R3, R4 and R5 below).
+R1. The application shall find the price of a watched item from the
+    item's Web page. Remember that the URL of an item is provided by
+    the user when the item is added to the watch list.
+    
+    a. It shall inform the user if the price of an item can't be found
+       (e.g., malformed or non-existing URL).
 
-	R2. Display all watched items along with their price changes. Consider
-		using a JList (or JTable) for this.
+    b. It shall support item pages from at least three different
+       online stores.
 
-	R3. Use custom dialogs (subclasses of JDialog) to add and change an
-		item in the watch list.
+R2. The application shall persist watched items. The items should be
+    stored in an external storage to so that they can be available
+    when the application is closed and launched later.
 
-	R4. Improve the user interface by proving a menu and a tool bar to (a)
-		add a new item and (b) to check the current prices of all
-		items. For each menu item, provide an icon, a mnemonic and an
-		accelerator. For each tool bar button, use an icon and provide a
-		tool tip.
-
-	R5. Provide a popup menu to manipulate an indiviual item. Your popup
-		menu shall include menu items for:
-
-		- Checking the current price
-		- Viewing its webpage
-		- Editing it (change the name and URL; see R1 above)
-		- Removing it (see R1 above)
-
-	R6. Use JavaDoc to document your classes. Write a Javadoc comment for
-		each class/interface, field, constructor and method.
+R3. You should separate network and database operations into separate
+    modules (or classes) to decouple them from the rest of the code.
+    Consider introducing new subclasses of the PriceFinder and
+    ItemManager classes.
  */
 package src.main.java.Pricewatcher.model;
 
