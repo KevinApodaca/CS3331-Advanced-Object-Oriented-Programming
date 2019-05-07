@@ -1,8 +1,11 @@
 package src.main.java.Pricewatcher.model;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Random;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -10,6 +13,8 @@ import org.jsoup.select.Elements;
 import javax.swing.*;
 
 public class WebPriceFinder extends PriceFinder{
+
+    private static JProgressBar progressBar;
 
     /** Given a url, this class will find the price of an item **/
 
@@ -32,7 +37,7 @@ public class WebPriceFinder extends PriceFinder{
         }
 
         try {
-            System.out.println("Loading...");
+            displayProgressBar();
             document = Jsoup.connect(url).get();
             System.out.println("Title: " + document.title());
             System.out.println("Host: " + urlHost);
@@ -106,4 +111,46 @@ public class WebPriceFinder extends PriceFinder{
         JOptionPane.showMessageDialog(warningWindow, msg, "Error Message", JOptionPane.ERROR_MESSAGE);
     }
 
+    /* Create progress bar */
+    private void displayProgressBar(){
+        JFrame f = new JFrame("Locating price...");
+        JPanel panel = new JPanel();
+        progressBar = new JProgressBar(0,100);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
+
+        panel.add(progressBar);
+        f.add(progressBar);
+
+        f.setSize(200,200);
+        f.setVisible(true);
+
+        fillProgressBar();
+
+    }
+
+    /* Add text to progress bar */
+    private static void fillProgressBar(){
+        int i = 0;
+        try {
+            while (i <= 100) {
+                // set text according to the level to which the bar is filled
+                if (i > 30 && i < 70)
+                    progressBar.setString("locating prices...");
+                else if (i > 70)
+                    progressBar.setString("almost there");
+                else
+                    progressBar.setString("loading items...");
+
+                // fill the menu bar
+                progressBar.setValue(i + 10);
+
+                // delay the thread
+                Thread.sleep(3000);
+                i += 20;
+            }
+        }
+        catch (Exception e) {
+        }
+    }
 }

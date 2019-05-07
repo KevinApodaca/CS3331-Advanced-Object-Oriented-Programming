@@ -138,6 +138,7 @@ public class Main extends JFrame {
      */
     private void refreshButtonClicked(ActionEvent event) {
         System.out.println("\nRefresh button clicked!");
+
         for (Item item : this.items) {
             webPriceFinder.getWebPrice(item.getURL());
 
@@ -145,6 +146,7 @@ public class Main extends JFrame {
         }
         System.out.println("Refresh done!");
         super.repaint();
+        super.revalidate();
     }
     /**
      * Callback to be invoked when the view-page icon is clicked by the user. This will launch the user's default web browser and open the URL of the item chosen.
@@ -753,7 +755,7 @@ public class Main extends JFrame {
                 String newItemUrl = newUrlField.getText();
 
                 for (Item item : items) {
-                    if (!newItemName.isEmpty() && !newItemUrl.isEmpty()) {
+                    if (!newItemName.isEmpty() || !newItemUrl.isEmpty()) {
                         model.remove(index);
                         model.add(index, new Item(newItemName, item.getCurrentPrice(), newItemUrl, item.getDateAdded()));
 
