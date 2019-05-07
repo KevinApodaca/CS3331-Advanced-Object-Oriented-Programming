@@ -29,4 +29,4 @@ dependencies {
 }
 
 // Define the main class for the application
-mainClassName = 'Pricewatcher.App'
+mainClassName = 'src.main.java.Pricewatcher.base'
