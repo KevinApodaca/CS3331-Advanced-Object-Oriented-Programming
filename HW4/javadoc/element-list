@@ -1,0 +1,4 @@
+src.main.java.Pricewatcher.base
+src.main.java.Pricewatcher.console
+src.main.java.Pricewatcher.model
+src.test.java.Pricewatcher
